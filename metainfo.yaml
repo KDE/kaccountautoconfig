@@ -1,0 +1,20 @@
+maintainer:
+description: A library that automatically discovers and validates mail and calendar server configurations from an email address and password.
+tier: 2
+type: functional
+platforms:
+  - name: Linux
+  - name: FreeBSD
+  - name: Windows
+  - name: macOS
+  - name: Android
+portingAid: false
+deprecated: false
+release: false
+libraries:
+  - cmake: "KAccountAutoconfig"
+cmakename: KAccountAutoconfig
+
+public_lib: true
+group: kdepim
+subgroup: Tier 2
