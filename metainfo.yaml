@@ -1,0 +1,20 @@
+maintainer:
+description: Get Mail and Calendar credentials to allow creating resources
+tier: 2
+type: functional
+platforms:
+  - name: Linux
+  - name: FreeBSD
+  - name: Windows
+  - name: macOS
+  - name: Android
+portingAid: false
+deprecated: false
+release: false
+libraries:
+  - cmake: "KF6::AccountAutoconfig"
+cmakename: KAccountAutoconfig
+
+public_lib: true
+group: Frameworks
+subgroup: Tier 2
