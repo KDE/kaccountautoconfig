@@ -9,6 +9,8 @@ target_sources(
     PRIVATE
         lib/kaccountautoconfigjob.cpp
         lib/kaccountautoconfigjob.h
+        lib/kautoconfigserver.h
+        lib/kautoconfigserver.cpp
 )
 
 target_link_libraries(
@@ -31,6 +33,7 @@ set_target_properties(
 ecm_generate_headers(KACCOUNTAUTOCONFIG_CamelCase_HEADERS
     HEADER_NAMES
     KAccountAutoconfigJob
+    KAutoconfigServer
     PREFIX KACCOUNTAUTOCONFIG
     RELATIVE lib
     REQUIRED_HEADERS KACCOUNTAUTOCONFIG_HEADERS
@@ -43,7 +46,13 @@ ecm_generate_export_header(KAccountAutoconfig
     USE_VERSION_HEADER
 )
 
-install(FILES lib/kaccountautoconfigjob.h DESTINATION "${KDE_INSTALL_INCLUDEDIR}/KAccountAutoconfig/" COMPONENT Devel)
+install(
+    FILES
+        lib/kaccountautoconfigjob.h
+        lib/kautoconfigserver.h
+    DESTINATION "${KDE_INSTALL_INCLUDEDIR}/KAccountAutoconfig/"
+    COMPONENT Devel
+)
 
 install(
     FILES
