@@ -16,7 +16,9 @@ private Q_SLOTS:
     {
         QFile file(QDir(QString::fromLatin1(TEST_DATA_DIR)).filePath(QStringLiteral("gandi.xml")));
         QVERIFY(file.open(QIODevice::ReadOnly));
-        const auto config = doParse(&file);
+        const auto res = doParse(&file);
+        QVERIFY(res);
+        const auto &config = *res;
         QVERIFY(config.emailProvider.displayName == QStringLiteral("Gandi Mail"));
     }
 
@@ -24,8 +26,18 @@ private Q_SLOTS:
     {
         QFile file(QDir(QString::fromLatin1(TEST_DATA_DIR)).filePath(QStringLiteral("example.xml")));
         QVERIFY(file.open(QIODevice::ReadOnly));
-        const auto config = doParse(&file);
+        const auto res = doParse(&file);
+        QVERIFY(res);
+        const auto &config = *res;
         QVERIFY(config.emailProvider.displayName == QStringLiteral("Google Workspace"));
+    }
+
+    void test_invalid()
+    {
+        QFile file(QDir(QString::fromLatin1(TEST_DATA_DIR)).filePath(QStringLiteral("invalid.xml")));
+        QVERIFY(file.open(QIODevice::ReadOnly));
+        const auto res = doParse(&file);
+        QVERIFY(!res);
     }
 };
 

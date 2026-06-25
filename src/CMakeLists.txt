@@ -53,6 +53,8 @@ ecm_generate_export_header(KAccountAutoconfig
     USE_VERSION_HEADER
 )
 
+ecm_qt_declare_logging_category(KAccountAutoconfig HEADER kaccountautoconfig_debug.h IDENTIFIER KACCOUNTAUTOCONFIG_LOG CATEGORY_NAME org.kde.pim.kaccountautoconfig)
+
 install(
     FILES
         lib/kaccountautoconfigjob.h

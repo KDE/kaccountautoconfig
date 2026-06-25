@@ -13,6 +13,7 @@ repos:
       - id: check-added-large-files
       - id: check-case-conflict
       - id: check-xml
+        exclude: autotests/data/*
       - id: check-yaml
         args: [--allow-multiple-documents]
         exclude: ^(.clang-tidy)
@@ -63,4 +64,4 @@ repos:
     rev: v6.2.0
     hooks:
       - id: reuse-lint-file
-        exclude: .xml
+        exclude: autotests/data/*

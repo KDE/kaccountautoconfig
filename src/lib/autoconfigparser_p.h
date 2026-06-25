@@ -10,4 +10,4 @@
 #include <kaccountautoconfig_export.h>
 #include <qiodevice.h>
 
-KACCOUNTAUTOCONFIG_EXPORT ClientConfig doParse(QIODevice *doc);
+KACCOUNTAUTOCONFIG_EXPORT std::optional<ClientConfig> doParse(QIODevice *doc);
