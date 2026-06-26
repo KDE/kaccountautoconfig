@@ -1,0 +1,16 @@
+<clientConfig version="1.1">
+  <emailProvider id="gandi.net">
+    <!-- Gandi is a domain registrar with free mail service -->
+    <!-- MX domain -->
+    <domain>gandi.net</domain>
+    <displayName>Gandi Mail</displayName>
+    <displayShortName>Gandi</displayShortName>
+    <incomingServer type="imap">
+      <hostname>mail gandi net</hostname>
+      <port>993</port>
+      <socketType>SSL</socketType>
+      <authentication>password-cleartext</authentication>
+      <username>%EMAILADDRESS%</username>
+    </incomingServer>
+  </emailProvider>
+</clientConfig>

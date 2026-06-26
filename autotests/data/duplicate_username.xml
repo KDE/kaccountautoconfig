@@ -1,0 +1,15 @@
+<clientConfig version="1.1">
+    <emailProvider id="gandi.net" type="pop3">
+        <domain>gandi.net</domain>
+        <displayName>Gandi Mail</displayName>
+        <displayShortName>Gandi</displayShortName>
+        <incomingServer>
+            <hostname>mail.gandi.net</hostname>
+            <port>110</port>
+            <socketType>STARTTLS</socketType>
+            <authentication>password-cleartext</authentication>
+            <username>%EMAILADDRESS%</username>
+            <username>Konqi</username>
+        </incomingServer>
+    </emailProvider>
+</clientConfig>

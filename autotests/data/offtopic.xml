@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<someUnrelatedTag>
+    <emailProvider id="example.com">
+        <domain>example.com</domain>
+        <domain>example.net</domain>
+        <displayName>Google Workspace</displayName>
+        <displayShortName>GMail</displayShortName>
+    </emailProvider>
+</someUnrelatedTag>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<clientConfig version="1.2">
+    <emailProvider id="example.com">
+        <domain>example.com</domain>
+        <displayName>Google Workspace</displayName>
+        <displayShortName>GMail</displayShortName>
+    </emailProvider>
+
+    <addressbook type="carddav">
+        <url>contacts.example.com/remote.php/dav</url>
+        <authentication>basic</authentication>
+        <username>%EMAILADDRESS%</username>
+    </addressbook>
+
+</clientConfig>

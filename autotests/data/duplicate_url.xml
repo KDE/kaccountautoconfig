@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<clientConfig version="1.2">
+    <calendar type="caldav">
+        <url>https://calendar.example.com/remote.php/dav</url>
+        <url>https://some.other.url.com</url>
+        <authentication>basic</authentication>
+        <username>%EMAILADDRESS%</username>
+    </calendar>
+</clientConfig>
