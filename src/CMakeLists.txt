@@ -13,11 +13,14 @@ target_sources(
         lib/kautoconfigserver.cpp
         lib/autoconfigparser.cpp
         lib/autoconfigparser_p.h
+        lib/autoconfigvalidator.cpp
+        lib/autoconfigvalidator.h
     PUBLIC
         FILE_SET HEADERS
             FILES
                 lib/kaccountautoconfigjob.h
                 lib/autoconfigparser_p.h
+                lib/autoconfigvalidator.h
 )
 
 target_link_libraries(

@@ -5,6 +5,7 @@
 */
 
 #include "autoconfigparser_p.h"
+#include "autoconfigvalidator.h"
 #include "kaccountautoconfig_debug.h"
 #include <QXmlStreamReader>
 
@@ -161,8 +162,8 @@ std::optional<ClientConfig> doParse(QIODevice *doc)
                 qCWarning(KACCOUNTAUTOCONFIG_LOG) << "XML parse error:" << xml.errorString() << "at line" << xml.lineNumber() << "column" << xml.columnNumber();
                 return {};
             }
-            if (!res) {
-                return {};
+            if (!res || !isValid(res.value())) {
+                return std::nullopt;
             }
             return res;
         }
