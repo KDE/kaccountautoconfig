@@ -7,17 +7,18 @@
 #include "lib/autoconfigparser_p.h"
 #include <QTest>
 
+using namespace AutoConfigParser;
+
 class AutoConfigParserTest : public QObject
 {
     Q_OBJECT
 
 private Q_SLOTS:
-
     void test_all()
     {
         QFile file(QDir(QString::fromLatin1(TEST_DATA_DIR)).filePath(QLatin1StringView("example.xml")));
         QVERIFY(file.open(QIODevice::ReadOnly));
-        const auto res = doParse(&file);
+        const auto res = parse(&file);
         QVERIFY(res);
         const auto &config = *res;
 
@@ -27,19 +28,19 @@ private Q_SLOTS:
         QCOMPARE(config.emailProvider.displayName, QLatin1StringView("Google Workspace"));
         QCOMPARE(config.emailProvider.displayShortName, QLatin1StringView("GMail"));
 
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("imap")][0].hostname.host(), QLatin1StringView("imap.example.com"));
+        QCOMPARE(config.serversByProtocol[QLatin1StringView("imap")][0].hostname, QLatin1StringView("imap.example.com"));
         QCOMPARE(config.serversByProtocol[QLatin1StringView("imap")][0].port, 993);
         QCOMPARE(config.serversByProtocol[QLatin1StringView("imap")][0].socketType, QLatin1StringView("SSL"));
         QCOMPARE(config.serversByProtocol[QLatin1StringView("imap")][0].authentications[0].method, QLatin1StringView("password-cleartext"));
         QCOMPARE(config.serversByProtocol[QLatin1StringView("imap")][0].username, QLatin1StringView("%EMAILADDRESS%"));
 
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("pop3")][0].hostname.host(), QLatin1StringView("pop.example.com"));
+        QCOMPARE(config.serversByProtocol[QLatin1StringView("pop3")][0].hostname, QLatin1StringView("pop.example.com"));
         QCOMPARE(config.serversByProtocol[QLatin1StringView("pop3")][0].port, 995);
         QCOMPARE(config.serversByProtocol[QLatin1StringView("pop3")][0].socketType, QLatin1StringView("SSL"));
         QCOMPARE(config.serversByProtocol[QLatin1StringView("pop3")][0].authentications[0].method, QLatin1StringView("password-cleartext"));
         QCOMPARE(config.serversByProtocol[QLatin1StringView("pop3")][0].username, QLatin1StringView("%EMAILADDRESS%"));
 
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("smtp")][0].hostname.host(), QLatin1StringView("smtp.googlemail.com"));
+        QCOMPARE(config.serversByProtocol[QLatin1StringView("smtp")][0].hostname, QLatin1StringView("smtp.googlemail.com"));
         QCOMPARE(config.serversByProtocol[QLatin1StringView("smtp")][0].port, 587);
         QCOMPARE(config.serversByProtocol[QLatin1StringView("smtp")][0].socketType, QLatin1StringView("STARTTLS"));
         QCOMPARE(config.serversByProtocol[QLatin1StringView("smtp")][0].authentications[0].method, QLatin1StringView("password-cleartext"));
@@ -65,7 +66,7 @@ private Q_SLOTS:
     {
         QFile file(QDir(QString::fromLatin1(TEST_DATA_DIR)).filePath(QLatin1StringView("gmail.xml")));
         QVERIFY(file.open(QIODevice::ReadOnly));
-        const auto res = doParse(&file);
+        const auto res = parse(&file);
         QVERIFY(res);
         const auto &config = *res;
 
@@ -117,7 +118,7 @@ private Q_SLOTS:
         QFETCH(QString, xmlName);
         QFile file(QDir(QString::fromLatin1(TEST_DATA_DIR)).filePath(xmlName));
         QVERIFY(file.open(QIODevice::ReadOnly));
-        const auto res = doParse(&file);
+        const auto res = parse(&file);
         QVERIFY(!res);
     }
 };

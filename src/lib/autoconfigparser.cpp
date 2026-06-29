@@ -5,9 +5,66 @@
 */
 
 #include "autoconfigparser_p.h"
-#include "autoconfigvalidator.h"
 #include "kaccountautoconfig_debug.h"
 #include <QXmlStreamReader>
+
+using namespace AutoConfigParser;
+
+constexpr auto tcpBasedProtocols = std::to_array({
+    QLatin1StringView("imap"),
+    QLatin1StringView("pop3"),
+    QLatin1StringView("smtp"),
+});
+
+constexpr auto urlBasedProtocols = std::to_array({
+    QLatin1StringView("jmap"),
+    QLatin1StringView("carddav"),
+    QLatin1StringView("caldav"),
+});
+
+bool isAuthenticationValid(const Authentication &authentication)
+{
+    return !authentication.method.isEmpty();
+}
+
+bool isServerValid(const Server &server)
+{
+    if (server.type.isEmpty()) {
+        qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Malformed XML: missing type attribute in server";
+        return false;
+    }
+    if (std::ranges::find(tcpBasedProtocols, server.type) != tcpBasedProtocols.end()) {
+        QUrl hostNameUrl;
+        hostNameUrl.setHost(server.hostname);
+        if (!hostNameUrl.isValid() || server.port == 0 || server.socketType.isEmpty() || server.authentications.isEmpty() || server.username.isEmpty()) {
+            qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Malformed XML: missing or invalid attributes in" << server.type << "server";
+            return false;
+        }
+    }
+    if (std::ranges::find(urlBasedProtocols, server.type) != urlBasedProtocols.end()) {
+        if (!server.url.isValid() || server.url.isRelative() || server.authentications.isEmpty() || server.username.isEmpty()) {
+            qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Malformed XML: missing or invalid attributes in" << server.type << "server";
+            return false;
+        }
+    }
+    if (!std::ranges::all_of(server.authentications, isAuthenticationValid)) {
+        qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Malformed XML: empty authentication tag in" << server.type << "server";
+        return false;
+    }
+    // Completely ignore unsupported protocols
+    return true;
+}
+
+bool isClientConfigValid(const ClientConfig &clientConfig)
+{
+    // Don't check emailProvider validity, since all servers are in the clientConfig map
+    for (const auto &servers : clientConfig.serversByProtocol.values()) {
+        if (!std::ranges::all_of(servers, isServerValid)) {
+            return false;
+        };
+    }
+    return true;
+}
 
 Documentation parseDocumentation(QXmlStreamReader &xml)
 {
@@ -35,7 +92,7 @@ std::optional<Server> parseServer(QXmlStreamReader &xml)
     while (xml.readNextStartElement()) {
         if (xml.name() == QLatin1StringView("url")) {
             if (!server.url.isEmpty()) {
-                qCWarning(KACCOUNTAUTOCONFIG_LOG()) << "Malformed XML: unexpected duplicate url tag in server";
+                qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Malformed XML: unexpected duplicate url tag in server";
                 return {};
             }
             server.url = QUrl(xml.readElementText());
@@ -48,26 +105,25 @@ std::optional<Server> parseServer(QXmlStreamReader &xml)
             server.authentications.append(authentication);
         } else if (xml.name() == QLatin1StringView("username")) {
             if (!server.username.isEmpty()) {
-                qCWarning(KACCOUNTAUTOCONFIG_LOG()) << "Malformed XML: unexpected duplicate username tag in server";
+                qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Malformed XML: unexpected duplicate username tag in server";
                 return {};
             }
             server.username = xml.readElementText();
         } else if (xml.name() == QLatin1StringView("hostname")) {
             if (!server.hostname.isEmpty()) {
-                qCWarning(KACCOUNTAUTOCONFIG_LOG()) << "Malformed XML: unexpected duplicate hostname tag in server";
+                qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Malformed XML: unexpected duplicate hostname tag in server";
                 return {};
             }
-            server.hostname = QUrl();
-            server.hostname.setHost(xml.readElementText());
+            server.hostname = xml.readElementText();
         } else if (xml.name() == QLatin1StringView("port")) {
             if (server.port != 0) {
-                qCWarning(KACCOUNTAUTOCONFIG_LOG()) << "Malformed XML: unexpected duplicate port tag in server";
+                qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Malformed XML: unexpected duplicate port tag in server";
                 return {};
             }
             server.port = xml.readElementText().toInt();
         } else if (xml.name() == QLatin1StringView("socketType")) {
             if (!server.socketType.isEmpty()) {
-                qCWarning(KACCOUNTAUTOCONFIG_LOG()) << "Malformed XML: unexpected duplicate socketType tag in server";
+                qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Malformed XML: unexpected duplicate socketType tag in server";
                 return {};
             }
             server.socketType = xml.readElementText();
@@ -89,13 +145,13 @@ std::optional<EmailProvider> parseEmailProvider(QXmlStreamReader &xml, QHash<QSt
             emailProvider.domains.append(xml.readElementText());
         } else if (xml.name() == QLatin1StringView("displayName")) {
             if (!emailProvider.displayName.isEmpty()) {
-                qCWarning(KACCOUNTAUTOCONFIG_LOG()) << "Malformed XML: unexpected duplicate displayName tag in emailProvider";
+                qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Malformed XML: unexpected duplicate displayName tag in emailProvider";
                 return {};
             }
             emailProvider.displayName = xml.readElementText();
         } else if (xml.name() == QLatin1StringView("displayShortName")) {
             if (!emailProvider.displayShortName.isEmpty()) {
-                qCWarning(KACCOUNTAUTOCONFIG_LOG()) << "Malformed XML: unexpected duplicate displayShortName tag in emailProvider";
+                qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Malformed XML: unexpected duplicate displayShortName tag in emailProvider";
                 return {};
             }
             emailProvider.displayShortName = xml.readElementText();
@@ -150,30 +206,31 @@ std::optional<ClientConfig> parseClientConfig(QXmlStreamReader &xml)
     return clientConfig;
 }
 
-std::optional<ClientConfig> doParse(QIODevice *doc)
+std::optional<ClientConfig> AutoConfigParser::parse(QIODevice *doc)
 {
     QXmlStreamReader xml;
     xml.setDevice(doc);
 
-    while (xml.readNextStartElement()) {
-        if (xml.name() == QLatin1StringView("clientConfig")) {
-            auto res = parseClientConfig(xml);
-            if (xml.hasError()) {
-                qCWarning(KACCOUNTAUTOCONFIG_LOG) << "XML parse error:" << xml.errorString() << "at line" << xml.lineNumber() << "column" << xml.columnNumber();
-                return {};
-            }
-            if (!res || !isValid(res.value())) {
-                return std::nullopt;
-            }
-            return res;
-        }
+    while (xml.readNextStartElement() && xml.name() != QLatin1StringView("clientConfig")) {
         xml.skipCurrentElement();
     }
 
     if (xml.hasError()) {
         qCWarning(KACCOUNTAUTOCONFIG_LOG) << "XML parse error:" << xml.errorString() << "at line" << xml.lineNumber() << "column" << xml.columnNumber();
-    } else {
-        qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Malformed XML: there is no <clientConfig> node";
+        return {};
     }
-    return {};
+    if (xml.name() != QLatin1StringView("clientConfig")) {
+        qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Malformed XML: there is no <clientConfig> node";
+        return {};
+    }
+
+    auto res = parseClientConfig(xml);
+    if (xml.hasError()) {
+        qCWarning(KACCOUNTAUTOCONFIG_LOG) << "XML parse error:" << xml.errorString() << "at line" << xml.lineNumber() << "column" << xml.columnNumber();
+        return {};
+    }
+    if (!res || !isClientConfigValid(*res)) {
+        return {};
+    }
+    return res;
 }
