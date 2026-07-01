@@ -63,19 +63,18 @@
         <incomingServer type="jmap">
             <url>https://jmap.example.com</url>
             <!-- Authentication methods
-            "basic": RFC 7617
-            "digest": RFC 7616
+            "Basic": RFC 7617
+            "Digest": RFC 7616
             "OAuth2": Provider MUST adhere to section "OAuth2 requirements".
             -->
             <authentication>OAuth2</authentication>
-            <authentication>basic</authentication>
             <username>%EMAILADDRESS%</username>
         </incomingServer>
 
         <incomingServer type="ews">
             <url>https://mail.example.com/EWS/Exchange.asmx</url>
             <username>%EMAILADDRESS%</username>
-            <authentication>basic</authentication>
+            <authentication system="http">Basic</authentication>
         </incomingServer>
 
         <incomingServer type="activesync">
@@ -93,13 +92,13 @@
 
     <addressbook type="carddav">
         <url>https://contacts.example.com/remote.php/dav</url>
-        <authentication>basic</authentication>
+        <authentication system="http">Basic</authentication>
         <username>%EMAILADDRESS%</username>
     </addressbook>
 
     <calendar type="caldav">
         <url>https://calendar.example.com/remote.php/dav</url>
-        <authentication>basic</authentication>
+        <authentication system="http">Basic</authentication>
         <username>%EMAILADDRESS%</username>
     </calendar>
 
@@ -109,13 +108,13 @@
     -->
     <fileShare type="webdav">
         <url>https://share.example.com/remote.php/dav</url>
-        <authentication>basic</authentication>
+        <authentication system="http">Basic</authentication>
         <username>%EMAILADDRESS%</username>
     </fileShare>
 
     <chatServer type="xmpp">
         <url>wss://example.com:5281/xmpp-websocket</url>
-        <authentication>basic</authentication>
+        <authentication system="http">Basic</authentication>
         <username>%EMAILADDRESS%</username>
     </chatServer>
 

@@ -5,6 +5,7 @@ include(ECMAddTests)
 ecm_add_tests(
     kaccountautoconfigtest.cpp
     kautoconfigservertest.cpp
+    clientconfigstructtest.cpp
     autoconfigparsertest.cpp
 
     LINK_LIBRARIES

@@ -37,19 +37,6 @@
       <authentication>OAuth2</authentication>
       <authentication>password-cleartext</authentication>
     </outgoingServer>
-
-    <documentation url="http://mail.google.com/support/bin/answer.py?answer=13273">
-      <descr>How to enable IMAP/POP3 in GMail</descr>
-    </documentation>
-    <documentation url="http://mail.google.com/support/bin/topic.py?topic=12806">
-      <descr>How to configure email clients for IMAP</descr>
-    </documentation>
-    <documentation url="http://mail.google.com/support/bin/topic.py?topic=12805">
-      <descr>How to configure email clients for POP3</descr>
-    </documentation>
-    <documentation url="http://mail.google.com/support/bin/answer.py?answer=86399">
-      <descr>How to configure TB 2.0 for POP3</descr>
-    </documentation>
   </emailProvider>
 
   <oAuth2>

@@ -7,6 +7,7 @@
 #include "lib/autoconfigparser_p.h"
 #include <QTest>
 
+using namespace Qt::StringLiterals;
 using namespace AutoConfigParser;
 
 class AutoConfigParserTest : public QObject
@@ -14,78 +15,201 @@ class AutoConfigParserTest : public QObject
     Q_OBJECT
 
 private Q_SLOTS:
-    void test_all()
+
+    void test_successes_data()
     {
-        QFile file(QDir(QString::fromLatin1(TEST_DATA_DIR)).filePath(QLatin1StringView("example.xml")));
-        QVERIFY(file.open(QIODevice::ReadOnly));
-        const auto res = parse(&file);
-        QVERIFY(res);
-        const auto &config = *res;
+        QTest::addColumn<QString>("xmlName");
+        QTest::addColumn<ClientConfig>("expectedConfig");
 
-        QCOMPARE(config.emailProvider.id, QLatin1StringView("example.com"));
-        QCOMPARE(config.emailProvider.domains[0], QLatin1StringView("example.com"));
-        QCOMPARE(config.emailProvider.domains[1], QLatin1StringView("example.net"));
-        QCOMPARE(config.emailProvider.displayName, QLatin1StringView("Google Workspace"));
-        QCOMPARE(config.emailProvider.displayShortName, QLatin1StringView("GMail"));
+        // clang-format off
 
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("imap")][0].hostname, QLatin1StringView("imap.example.com"));
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("imap")][0].port, 993);
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("imap")][0].socketType, QLatin1StringView("SSL"));
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("imap")][0].authentications[0].method, QLatin1StringView("password-cleartext"));
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("imap")][0].username, QLatin1StringView("%EMAILADDRESS%"));
+        QTest::newRow("example.xml") << QStringLiteral("example.xml") << ClientConfig{
+            .emailProvider =
+                {.id = "example.com"_L1,
+                 .domains =
+                     {
+                         "example.com"_L1,
+                         "example.net"_L1,
+                     },
+                 .displayName = "Google Workspace"_L1,
+                 .displayShortName = "GMail"_L1,
+                 .documentations =
+                     {{.url = QUrl("https://www.example.com/help/mail/"_L1),
+                       .descriptionByLanguage = {{"en"_L1, "Configure mail app for IMAP"_L1}, {"de"_L1, "Email mit IMAP konfigurieren"_L1}}}}},
+            .serversByProtocol = {
+                {"imap"_L1,
+                 QList{Server{
+                     .type = "imap"_L1,
+                     .authentications = {{.method = "password-cleartext"_L1}},
+                     .username = "%EMAILADDRESS%"_L1,
+                     .hostname = "imap.example.com"_L1,
+                     .port = 993,
+                     .socketType = "SSL"_L1,
+                 }}},
+                {"pop3"_L1,
+                 QList{Server{
+                     .type = "pop3"_L1,
+                     .authentications = {{.method = "password-cleartext"_L1}},
+                     .username = "%EMAILADDRESS%"_L1,
+                     .hostname = "pop.example.com"_L1,
+                     .port = 995,
+                     .socketType = "SSL"_L1,
+                 }}},
+                {"smtp"_L1,
+                 QList{Server{
+                     .type = "smtp"_L1,
+                     .authentications = {{.method = "password-cleartext"_L1}},
+                     .username = "%EMAILADDRESS%"_L1,
+                     .hostname = "smtp.googlemail.com"_L1,
+                     .port = 587,
+                     .socketType = "STARTTLS"_L1,
+                 }}},
+                {"jmap"_L1,
+                 QList{Server{
+                     .type = "jmap"_L1,
+                     .url = QUrl("https://jmap.example.com"_L1),
+                     .authentications = {{.method = "OAuth2"_L1}},
+                     .username = "%EMAILADDRESS%"_L1,
+                 }}},
+                {"ews"_L1,
+                 QList{Server{
+                     .type = "ews"_L1,
+                     .url = QUrl("https://mail.example.com/EWS/Exchange.asmx"_L1),
+                     .authentications =
+                         {
+                             {.system = "http"_L1, .method = "Basic"_L1},
+                         },
+                     .username = "%EMAILADDRESS%"_L1,
+                 }}},
+                {"activesync"_L1,
+                 QList{Server{
+                     .type = "activesync"_L1,
+                     .url = QUrl("https://mail.example.com/Microsoft-Server-ActiveSync"_L1),
+                     .authentications = {{.method = "OAuth2"_L1}},
+                     .username = "%EMAILADDRESS%"_L1,
+                 }}},
+                {"carddav"_L1,
+                 QList{Server{
+                     .type = "carddav"_L1,
+                     .url = QUrl("https://contacts.example.com/remote.php/dav"_L1),
+                     .authentications =
+                         {
+                             {.system = "http"_L1, .method = "Basic"_L1},
+                         },
+                     .username = "%EMAILADDRESS%"_L1,
+                 }}},
+                {"caldav"_L1,
+                 QList{Server{
+                     .type = "caldav"_L1,
+                     .url = QUrl("https://calendar.example.com/remote.php/dav"_L1),
+                     .authentications =
+                         {
+                             {.system = "http"_L1, .method = "Basic"_L1},
+                         },
+                     .username = "%EMAILADDRESS%"_L1,
+                 }}},
+                {QString{"webdav"_L1},
+                 QList{Server{
+                     .type = "webdav"_L1,
+                     .url = QUrl("https://share.example.com/remote.php/dav"_L1),
+                     .authentications =
+                         {
+                             {.system = "http"_L1, .method = "Basic"_L1},
+                         },
+                     .username = "%EMAILADDRESS%"_L1,
+                 }}},
+                {"xmpp"_L1,
+                 QList{
+                     Server{
+                         .type = "xmpp"_L1,
+                         .url = QUrl("wss://example.com:5281/xmpp-websocket"_L1),
+                         .authentications =
+                             {
+                                 {.system = "http"_L1, .method = "Basic"_L1},
+                             },
+                         .username = "%EMAILADDRESS%"_L1,
+                     },
+                     Server{
+                         .type = "xmpp"_L1,
+                         .authentications = {{.method = "password-cleartext"_L1}},
+                         .username = "%EMAILADDRESS%"_L1,
+                         .hostname = "xmpp.example.com"_L1,
+                         .port = 5223,
+                         .socketType = "TLS"_L1,
+                     }
+                 }},
+                {"opentalk"_L1,
+                 QList{Server{
+                     .type = "opentalk"_L1,
+                     .url = QUrl("https://talk.example.com/login"_L1),
+                     .authentications =
+                         {
+                             {.method = "OAuth2"_L1},
+                         },
+                     .username = "%EMAILADDRESS%"_L1,
+                 }}},
+            },
+        };
 
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("pop3")][0].hostname, QLatin1StringView("pop.example.com"));
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("pop3")][0].port, 995);
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("pop3")][0].socketType, QLatin1StringView("SSL"));
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("pop3")][0].authentications[0].method, QLatin1StringView("password-cleartext"));
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("pop3")][0].username, QLatin1StringView("%EMAILADDRESS%"));
+        QTest::newRow("multiple_authentication_methods.xml")
+            << QStringLiteral("multiple_authentication_methods.xml")
+            << ClientConfig{
+                .emailProvider =
+                    {
+                        .id = "googlemail.com"_L1,
+                        .domains =
+                            {
+                                "gmail.com"_L1,
+                                "googlemail.com"_L1,
+                                "google.com"_L1,
+                                "jazztel.es"_L1,
+                            },
+                        .displayName = "Google Mail"_L1,
+                        .displayShortName = "GMail"_L1,
+                    },
+                .serversByProtocol = {
+                    {"imap"_L1,
+                     QList{Server{
+                         .type = "imap"_L1,
+                         .authentications = {{.method = "OAuth2"_L1}, {.method = "password-cleartext"_L1}},
+                         .username = "%EMAILADDRESS%"_L1,
+                         .hostname = "imap.gmail.com"_L1,
+                         .port = 993,
+                         .socketType = "SSL"_L1,
+                     }}},
+                    {"pop3"_L1,
+                     QList{Server{
+                         .type = "pop3"_L1,
+                         .authentications = {{.method = "OAuth2"_L1}, {.method = "password-cleartext"_L1}},
+                         .username = "%EMAILADDRESS%"_L1,
+                         .hostname = "pop.gmail.com"_L1,
+                         .port = 995,
+                         .socketType = "SSL"_L1,
+                     }}},
+                    {"smtp"_L1,
+                     QList{Server{
+                         .type = "smtp"_L1,
+                         .authentications = {{.method = "OAuth2"_L1}, {.method = "password-cleartext"_L1}},
+                         .username = "%EMAILADDRESS%"_L1,
+                         .hostname = "smtp.gmail.com"_L1,
+                         .port = 465,
+                         .socketType = "SSL"_L1,
+                     }}},
+                }
+            };
 
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("smtp")][0].hostname, QLatin1StringView("smtp.googlemail.com"));
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("smtp")][0].port, 587);
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("smtp")][0].socketType, QLatin1StringView("STARTTLS"));
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("smtp")][0].authentications[0].method, QLatin1StringView("password-cleartext"));
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("smtp")][0].username, QLatin1StringView("%EMAILADDRESS%"));
-
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("jmap")][0].url.toDisplayString(), QLatin1StringView("https://jmap.example.com"));
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("jmap")][0].authentications[0].method, QLatin1StringView("OAuth2"));
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("jmap")][0].authentications[1].method, QLatin1StringView("basic"));
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("jmap")][0].username, QLatin1StringView("%EMAILADDRESS%"));
-
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("carddav")][0].url.toDisplayString(),
-                 QLatin1StringView("https://contacts.example.com/remote.php/dav"));
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("carddav")][0].authentications[0].method, QLatin1StringView("basic"));
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("carddav")][0].username, QLatin1StringView("%EMAILADDRESS%"));
-
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("caldav")][0].url.toDisplayString(),
-                 QLatin1StringView("https://calendar.example.com/remote.php/dav"));
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("caldav")][0].authentications[0].method, QLatin1StringView("basic"));
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("caldav")][0].username, QLatin1StringView("%EMAILADDRESS%"));
+        // clang-format on
     }
 
-    void test_multiple_authentications()
+    void test_successes()
     {
-        QFile file(QDir(QString::fromLatin1(TEST_DATA_DIR)).filePath(QLatin1StringView("gmail.xml")));
+        QFETCH(QString, xmlName);
+        QFETCH(ClientConfig, expectedConfig);
+        QFile file(QDir(QString::fromLatin1(TEST_DATA_DIR)).filePath(xmlName));
         QVERIFY(file.open(QIODevice::ReadOnly));
-        const auto res = parse(&file);
-        QVERIFY(res);
-        const auto &config = *res;
-
-        QCOMPARE(config.emailProvider.id, QLatin1StringView("googlemail.com"));
-        QCOMPARE(config.emailProvider.domains[0], QLatin1StringView("gmail.com"));
-        QCOMPARE(config.emailProvider.domains[1], QLatin1StringView("googlemail.com"));
-        QCOMPARE(config.emailProvider.domains[2], QLatin1StringView("google.com"));
-        QCOMPARE(config.emailProvider.domains[3], QLatin1StringView("jazztel.es"));
-        QCOMPARE(config.emailProvider.displayName, QLatin1StringView("Google Mail"));
-        QCOMPARE(config.emailProvider.displayShortName, QLatin1StringView("GMail"));
-
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("imap")][0].authentications[0].method, QLatin1StringView("OAuth2"));
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("imap")][0].authentications[1].method, QLatin1StringView("password-cleartext"));
-
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("pop3")][0].authentications[0].method, QLatin1StringView("OAuth2"));
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("pop3")][0].authentications[1].method, QLatin1StringView("password-cleartext"));
-
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("smtp")][0].authentications[0].method, QLatin1StringView("OAuth2"));
-        QCOMPARE(config.serversByProtocol[QLatin1StringView("smtp")][0].authentications[1].method, QLatin1StringView("password-cleartext"));
+        const auto actual = parse(&file);
+        QVERIFY(actual);
+        QVERIFY(*actual == expectedConfig);
     }
 
     void test_failures_data()
