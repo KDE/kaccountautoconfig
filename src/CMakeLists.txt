@@ -26,6 +26,7 @@ target_link_libraries(
     KAccountAutoconfig
     PUBLIC
         KF6::CoreAddons # for KJob
+        Qt6::Network
 )
 
 set_target_properties(

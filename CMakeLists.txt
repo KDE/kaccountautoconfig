@@ -39,6 +39,7 @@ include(ECMQtDeclareLoggingCategory)
 include(ECMDeprecationSettings)
 
 find_package(Qt6Core ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
+find_package(Qt6 ${REQUIRED_QT_VERSION} REQUIRED COMPONENTS Network)
 find_package(KF6CoreAddons ${KF_MIN_VERSION} CONFIG REQUIRED)
 
 set(EXCLUDE_DEPRECATED_BEFORE_AND_AT

@@ -11,6 +11,17 @@ ecm_add_tests(
     Qt6::Test
 )
 
+ecm_add_test(
+    fakeservertest.cpp
+    fakeserver/stubnetworkaccessmanager.cpp
+
+    TEST_NAME fakeservertest
+
+    LINK_LIBRARIES
+    Qt6::Test
+    Qt6::Network
+)
+
 ecm_add_tests(
         clientconfigstructtest.cpp
 
