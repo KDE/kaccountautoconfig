@@ -5,9 +5,11 @@ add_library(KAccountAutoconfig)
 generate_export_header(KAccountAutoconfig)
 
 set(KAccountAutoconfig_LIB_SRCS
+    lib/lookupproviderjobbase.cpp
     lib/kaccountautoconfigjob.cpp
     lib/kautoconfigserver.cpp
     lib/autoconfigparser.cpp
+    lib/lookupproviderjobbase_p.h
     lib/autoconfigparser_p.h
 )
 
@@ -81,9 +83,8 @@ if(BUILD_TESTING)
         KAccountAutoconfigStatic
         PUBLIC
             KF6::CoreAddons # for KJob
-            Qt6::Core
+            Qt6::Network
     )
-
     # Needed for windows dll linkage error on static
     set_target_properties(
         KAccountAutoconfigStatic
