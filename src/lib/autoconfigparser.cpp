@@ -134,6 +134,63 @@ std::optional<Server> parseServer(QXmlStreamReader &xml)
     return server;
 }
 
+std::optional<OAuth2> parseOAuth2(QXmlStreamReader &xml)
+{
+    auto oAuth2 = OAuth2();
+    while (xml.readNextStartElement()) {
+        if (xml.name() == QLatin1StringView("authURL")) {
+            if (!oAuth2.authURL.isEmpty()) {
+                qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Malformed XML: unexpected duplicate authURL tag in oAuth2";
+                return std::nullopt;
+            }
+            oAuth2.authURL = QUrl(xml.readElementText());
+        } else if (xml.name() == QLatin1StringView("tokenURL")) {
+            if (!oAuth2.tokenURL.isEmpty()) {
+                qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Malformed XML: unexpected duplicate tokenURL tag in oAuth2";
+                return std::nullopt;
+            }
+            oAuth2.tokenURL = QUrl(xml.readElementText());
+        } else if (xml.name() == QLatin1StringView("issuer")) {
+            if (!oAuth2.issuer.isEmpty()) {
+                qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Malformed XML: unexpected duplicate issuer tag in oAuth2";
+                return std::nullopt;
+            }
+            oAuth2.issuer = xml.readElementText();
+        } else if (xml.name() == QLatin1StringView("scope")) {
+            if (!oAuth2.scope.isEmpty()) {
+                qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Malformed XML: unexpected duplicate scope tag in oAuth2";
+                return std::nullopt;
+            }
+            oAuth2.scope = xml.readElementText();
+        } else if (xml.name() == QLatin1StringView("clientID")) {
+            if (!oAuth2.clientID.isEmpty()) {
+                qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Malformed XML: unexpected duplicate clientID tag in oAuth2";
+                return std::nullopt;
+            }
+            oAuth2.clientID = xml.readElementText();
+        } else if (xml.name() == QLatin1StringView("clientSecret")) {
+            if (!oAuth2.clientSecret.isEmpty()) {
+                qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Malformed XML: unexpected duplicate clientSecret tag in oAuth2";
+                return std::nullopt;
+            }
+            oAuth2.clientSecret = xml.readElementText();
+        } else {
+            xml.skipCurrentElement();
+        }
+    }
+    return oAuth2;
+}
+
+Domain parseDomain(QXmlStreamReader &xml)
+{
+    auto domain = Domain();
+    if (xml.attributes().hasAttribute(QLatin1StringView("purpose"))) {
+        domain.purpose = xml.attributes().value(QLatin1StringView("purpose")).toString();
+    }
+    domain.path = xml.readElementText();
+    return domain;
+}
+
 std::optional<EmailProvider> parseEmailProvider(QXmlStreamReader &xml, QHash<QString, QList<Server>> &serversByProtocol)
 {
     auto emailProvider = EmailProvider();
@@ -142,7 +199,7 @@ std::optional<EmailProvider> parseEmailProvider(QXmlStreamReader &xml, QHash<QSt
     }
     while (xml.readNextStartElement()) {
         if (xml.name() == QLatin1StringView("domain")) {
-            emailProvider.domains.append(xml.readElementText());
+            emailProvider.domains.append(parseDomain(xml));
         } else if (xml.name() == QLatin1StringView("displayName")) {
             if (!emailProvider.displayName.isEmpty()) {
                 qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Malformed XML: unexpected duplicate displayName tag in emailProvider";
@@ -179,8 +236,13 @@ std::optional<ClientConfig> parseClientConfig(QXmlStreamReader &xml)
         QLatin1StringView("fileShare"),
         QLatin1StringView("chatServer"),
         QLatin1StringView("videoConference"),
+        QLatin1StringView("setupServer"),
+
     });
     auto clientConfig = ClientConfig();
+    if (xml.attributes().hasAttribute(QLatin1StringView("version"))) {
+        clientConfig.version = xml.attributes().value(QLatin1StringView("version")).toString();
+    }
     while (xml.readNextStartElement()) {
         if (xml.name() == QLatin1StringView("emailProvider")) {
             const auto res = parseEmailProvider(xml, clientConfig.serversByProtocol);
@@ -198,6 +260,16 @@ std::optional<ClientConfig> parseClientConfig(QXmlStreamReader &xml)
                 clientConfig.serversByProtocol[protocol].append(*res);
             } else {
                 xml.skipCurrentElement();
+            }
+        } else if (xml.name() == QLatin1StringView("oAuth2")) {
+            auto res = parseOAuth2(xml);
+            if (!res.has_value()) {
+                return std::nullopt;
+            }
+            clientConfig.oAuth2 = res.value();
+        } else if (xml.name() == QLatin1StringView("clientConfigUpdate")) {
+            if (xml.attributes().hasAttribute(QLatin1StringView("url"))) {
+                clientConfig.clientConfigUpdate = QUrl(xml.attributes().value(QLatin1StringView("url")).toString());
             }
         } else {
             xml.skipCurrentElement();

@@ -212,8 +212,8 @@ private Q_SLOTS:
             .id = "example.com"_L1,
             .domains =
                 {
-                    "example.com"_L1,
-                    "example.net"_L1,
+                    {.path = "example.com"_L1},
+                    {.path = "example.net"_L1},
                 },
             .displayName = "Google Workspace"_L1,
             .displayShortName = "GMail"_L1,
@@ -228,8 +228,8 @@ private Q_SLOTS:
                 .id = "example.com"_L1,
                 .domains =
                     {
-                        "example.com"_L1,
-                        "example.net"_L1,
+                        {.path = "example.com"_L1},
+                        {.path = "example.net"_L1},
                     },
                 .displayName = "Google Workspace"_L1,
                 .displayShortName = "GMail"_L1,
@@ -246,8 +246,8 @@ private Q_SLOTS:
                 .id = "example.net"_L1,
                 .domains =
                     {
-                        "example.com"_L1,
-                        "example.net"_L1,
+                        {.path = "example.com"_L1},
+                        {.path = "example.net"_L1},
                     },
                 .displayName = "Google Workspace"_L1,
                 .displayShortName = "GMail"_L1,
@@ -264,9 +264,9 @@ private Q_SLOTS:
                 .id = "example.com"_L1,
                 .domains =
                     {
-                        "example.com"_L1,
-                        "example.net"_L1,
-                        "example.org"_L1,
+                        {.path = "example.com"_L1},
+                        {.path = "example.net"_L1},
+                        {.path = "example.org"_L1},
                     },
                 .displayName = "Google Workspace"_L1,
                 .displayShortName = "GMail"_L1,
@@ -283,8 +283,8 @@ private Q_SLOTS:
                 .id = "example.com"_L1,
                 .domains =
                     {
-                        "example.com"_L1,
-                        "example.net"_L1,
+                        {.path = "example.com"_L1},
+                        {.path = "example.net"_L1},
                     },
                 .displayName = "Google Work space"_L1,
                 .displayShortName = "GMail"_L1,
@@ -301,8 +301,8 @@ private Q_SLOTS:
                 .id = "example.com"_L1,
                 .domains =
                     {
-                        "example.com"_L1,
-                        "example.net"_L1,
+                        {.path = "example.com"_L1},
+                        {.path = "example.net"_L1},
                     },
                 .displayName = "Google Workspace"_L1,
                 .displayShortName = "eMail"_L1,
@@ -319,8 +319,8 @@ private Q_SLOTS:
                 .id = "example.com"_L1,
                 .domains =
                     {
-                        "example.com"_L1,
-                        "example.net"_L1,
+                        {.path = "example.com"_L1},
+                        {.path = "example.net"_L1},
                     },
                 .displayName = "Google Workspace"_L1,
                 .displayShortName = "GMail"_L1,
@@ -338,10 +338,10 @@ private Q_SLOTS:
                     .id = "googlemail.com"_L1,
                     .domains =
                         {
-                            "gmail.com"_L1,
-                            "googlemail.com"_L1,
-                            "google.com"_L1,
-                            "jazztel.es"_L1,
+                            {.path = "gmail.com"_L1},
+                            {.path = "googlemail.com"_L1},
+                            {.path = "google.com"_L1},
+                            {.path = "jazztel.es"_L1},
                         },
                     .displayName = "Google Mail"_L1,
                     .displayShortName = "GMail"_L1,
@@ -375,10 +375,10 @@ private Q_SLOTS:
                         .id = "googlemail.com"_L1,
                         .domains =
                             {
-                                "gmail.com"_L1,
-                                "googlemail.com"_L1,
-                                "google.com"_L1,
-                                "jazztel.es"_L1,
+                                {.path = "gmail.com"_L1},
+                                {.path = "googlemail.com"_L1},
+                                {.path = "google.com"_L1},
+                                {.path = "jazztel.es"_L1},
                             },
                         .displayName = "Google Mail"_L1,
                         .displayShortName = "GMail"_L1,
@@ -416,10 +416,10 @@ private Q_SLOTS:
                         .id = "gmail.com"_L1,
                         .domains =
                             {
-                                "gmail.com"_L1,
-                                "googlemail.com"_L1,
-                                "google.com"_L1,
-                                "jazztel.es"_L1,
+                                {.path = "gmail.com"_L1},
+                                {.path = "googlemail.com"_L1},
+                                {.path = "google.com"_L1},
+                                {.path = "jazztel.es"_L1},
                             },
                         .displayName = "Google Mail"_L1,
                         .displayShortName = "GMail"_L1,
@@ -457,10 +457,10 @@ private Q_SLOTS:
                         .id = "googlemail.com"_L1,
                         .domains =
                             {
-                                "gmail.com"_L1,
-                                "googlemail.com"_L1,
-                                "google.com"_L1,
-                                "jazztel.es"_L1,
+                                {.path = "gmail.com"_L1},
+                                {.path = "googlemail.com"_L1},
+                                {.path = "google.com"_L1},
+                                {.path = "jazztel.es"_L1},
                             },
                         .displayName = "Google Mail"_L1,
                         .displayShortName = "GMail"_L1,
@@ -498,10 +498,10 @@ private Q_SLOTS:
                         .id = "googlemail.com"_L1,
                         .domains =
                             {
-                                "gmail.com"_L1,
-                                "googlemail.com"_L1,
-                                "google.com"_L1,
-                                "jazztel.es"_L1,
+                                {.path = "gmail.com"_L1},
+                                {.path = "googlemail.com"_L1},
+                                {.path = "google.com"_L1},
+                                {.path = "jazztel.es"_L1},
                             },
                         .displayName = "Google Mail"_L1,
                         .displayShortName = "GMail"_L1,
@@ -539,10 +539,10 @@ private Q_SLOTS:
                         .id = "googlemail.com"_L1,
                         .domains =
                             {
-                                "gmail.com"_L1,
-                                "googlemail.com"_L1,
-                                "google.com"_L1,
-                                "jazztel.es"_L1,
+                                {.path = "gmail.com"_L1},
+                                {.path = "googlemail.com"_L1},
+                                {.path = "google.com"_L1},
+                                {.path = "jazztel.es"_L1},
                             },
                         .displayName = "Google Mail"_L1,
                         .displayShortName = "GMail"_L1,

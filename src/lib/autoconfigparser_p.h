@@ -13,6 +13,7 @@
 
 namespace AutoConfigParser
 {
+
 struct Documentation {
     QUrl url;
     QHash<QString, QString> descriptionByLanguage;
@@ -39,10 +40,28 @@ struct Server {
     bool operator==(const Server &other) const = default;
 };
 
+struct Domain {
+    QString purpose;
+    QString path;
+
+    bool operator==(const Domain &other) const = default;
+};
+
+struct OAuth2 {
+    QUrl authURL;
+    QUrl tokenURL;
+    QString issuer;
+    QString scope;
+    QString clientID;
+    QString clientSecret;
+
+    bool operator==(const OAuth2 &other) const = default;
+};
+
 struct EmailProvider {
     QString id;
 
-    QStringList domains;
+    QList<Domain> domains;
     QString displayName;
     QString displayShortName;
 
@@ -52,8 +71,11 @@ struct EmailProvider {
 };
 
 struct ClientConfig {
+    QString version;
     EmailProvider emailProvider;
     QHash<QString, QList<Server>> serversByProtocol;
+    OAuth2 oAuth2;
+    QUrl clientConfigUpdate;
 
     bool operator==(const ClientConfig &other) const = default;
 };
