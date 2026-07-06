@@ -10,15 +10,14 @@
 #include <QNetworkAccessManager>
 #include <kmacroexpander.h>
 
-LookupProviderJobBase::LookupProviderJobBase(const QString &email, QNetworkAccessManager *networkAccessManager)
-    : KJob(networkAccessManager)
-    , m_networkAccessManager(networkAccessManager)
-    , m_email(email)
+LookupProviderJobBase::LookupProviderJobBase(const QString &email, QObject *parent)
+    : LookupProviderJobBase(email, nullptr, parent)
 {
-    m_emailDomain = email.split(u'@').last();
+}
 
-    m_placeHolderSubstitutions.insert(QStringLiteral("EMAILDOMAIN"), m_emailDomain);
-    m_placeHolderSubstitutions.insert(QStringLiteral("EMAILADDRESS"), m_email);
+LookupProviderJobBase::LookupProviderJobBase(const QString &email, QNetworkAccessManager *networkAccessManager)
+    : LookupProviderJobBase(email, networkAccessManager, networkAccessManager)
+{
 }
 
 LookupProviderJobBase::~LookupProviderJobBase() = default;
@@ -41,6 +40,16 @@ QString LookupProviderJobBase::substitutePlaceholders(const QString &in) const
 std::optional<AutoConfigParser::ClientConfig> LookupProviderJobBase::parse(QIODevice *data)
 {
     return AutoConfigParser::parse(data);
+}
+
+LookupProviderJobBase::LookupProviderJobBase(const QString &email, QNetworkAccessManager *networkAccessManager, QObject *parent)
+    : KJob(parent)
+    , m_networkAccessManager(networkAccessManager)
+    , m_email(email)
+    , m_emailDomain(email.split(u'@').last())
+{
+    m_placeHolderSubstitutions.insert(QStringLiteral("EMAILDOMAIN"), m_emailDomain);
+    m_placeHolderSubstitutions.insert(QStringLiteral("EMAILADDRESS"), m_email);
 }
 
 void LookupProviderJobBase::start()

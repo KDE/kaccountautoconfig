@@ -39,4 +39,5 @@ accountautoconfig_unit_tests(
     ispdbproviderlookupjobtest
     kaccountautoconfigtest
     kautoconfigservertest
+    localfileproviderlookupjobtest
 )

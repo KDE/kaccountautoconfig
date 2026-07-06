@@ -36,6 +36,7 @@ public:
     };
 
     explicit LookupProviderJobBase(const QString &email, QNetworkAccessManager *networkAccessManager);
+    explicit LookupProviderJobBase(const QString &email, QObject *parent = nullptr);
     ~LookupProviderJobBase() override;
 
     [[nodiscard]] std::optional<AutoConfigParser::ClientConfig> configuration() const;
@@ -45,6 +46,8 @@ public:
 protected:
     std::optional<AutoConfigParser::ClientConfig> m_configurationData;
     QString m_configurationSource;
+    QString m_email;
+    QString m_emailDomain;
 
     QNetworkAccessManager *const m_networkAccessManager;
 
@@ -62,7 +65,7 @@ protected:
     virtual void lookup() = 0;
 
 private:
-    QString m_email;
-    QString m_emailDomain;
+    LookupProviderJobBase(const QString &email, QNetworkAccessManager *networkAccessManager, QObject *parent);
+
     QHash<QString, QString> m_placeHolderSubstitutions;
 };
