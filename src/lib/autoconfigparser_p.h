@@ -9,7 +9,6 @@
 #include <QHash>
 #include <QUrl>
 #include <QXmlStreamReader>
-#include <kaccountautoconfig_export.h>
 
 namespace AutoConfigParser
 {
@@ -80,7 +79,7 @@ struct ClientConfig {
     bool operator==(const ClientConfig &other) const = default;
 };
 
-KACCOUNTAUTOCONFIG_EXPORT std::optional<ClientConfig> parse(QIODevice *doc);
+std::optional<ClientConfig> parse(QIODevice *doc);
 };
 
 Q_DECLARE_METATYPE(AutoConfigParser::ClientConfig)

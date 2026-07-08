@@ -4,20 +4,22 @@ add_library(KAccountAutoconfig)
 
 generate_export_header(KAccountAutoconfig)
 
+set(KAccountAutoconfig_LIB_SRCS
+    lib/kaccountautoconfigjob.cpp
+    lib/kautoconfigserver.cpp
+    lib/autoconfigparser.cpp
+    lib/autoconfigparser_p.h
+)
+
 target_sources(
     KAccountAutoconfig
     PRIVATE
-        lib/kaccountautoconfigjob.cpp
-        lib/kaccountautoconfigjob.h
-        lib/kautoconfigserver.h
-        lib/kautoconfigserver.cpp
-        lib/autoconfigparser.cpp
-        lib/autoconfigparser_p.h
+        ${KAccountAutoconfig_LIB_SRCS}
     PUBLIC
         FILE_SET HEADERS
             FILES
                 lib/kaccountautoconfigjob.h
-                lib/autoconfigparser_p.h
+                lib/kautoconfigserver.h
 )
 
 target_link_libraries(
@@ -69,3 +71,24 @@ install(
     DESTINATION ${KDE_INSTALL_INCLUDEDIR}/KAccountAutoconfig
     COMPONENT Devel
 )
+
+if(BUILD_TESTING)
+    add_library(KAccountAutoconfigStatic STATIC)
+    target_sources(KAccountAutoconfigStatic PRIVATE ${KAccountAutoconfig_LIB_SRCS})
+
+    target_link_libraries(
+        KAccountAutoconfigStatic
+        PUBLIC
+            KF6::CoreAddons # for KJob
+            Qt6::Core
+    )
+
+    # Needed for windows dll linkage error on static
+    set_target_properties(
+        KAccountAutoconfigStatic
+        PROPERTIES
+            COMPILE_FLAGS
+                -DKACCOUNTAUTOCONFIG_STATIC_DEFINE=1
+    )
+    ecm_qt_declare_logging_category(KAccountAutoconfigStatic HEADER kaccountautoconfig_debug.h IDENTIFIER KACCOUNTAUTOCONFIG_LOG CATEGORY_NAME org.kde.pim.kaccountautoconfig)
+endif()
