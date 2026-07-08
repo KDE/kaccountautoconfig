@@ -11,6 +11,13 @@ target_sources(
         lib/kaccountautoconfigjob.h
         lib/kautoconfigserver.h
         lib/kautoconfigserver.cpp
+        lib/autoconfigparser.cpp
+        lib/autoconfigparser_p.h
+    PUBLIC
+        FILE_SET HEADERS
+            FILES
+                lib/kaccountautoconfigjob.h
+                lib/autoconfigparser_p.h
 )
 
 target_link_libraries(
