@@ -9,8 +9,10 @@ set(KAccountAutoconfig_LIB_SRCS
     lib/kaccountautoconfigjob.cpp
     lib/kautoconfigserver.cpp
     lib/emailproviderlookupjob.cpp
+    lib/ispdbproviderlookupjob.cpp
     lib/autoconfigparser.cpp
     lib/lookupproviderjobbase_p.h
+    lib/ispdbproviderlookupjob_p.h
     lib/emailproviderlookupjob_p.h
     lib/autoconfigparser_p.h
 )
