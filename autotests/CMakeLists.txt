@@ -46,6 +46,18 @@ ecm_add_test(
     Qt6::Network
 )
 
+ecm_add_test(
+    lookuporchestratorjobtest.cpp
+    fakeserver/stubnetworkaccessmanager.cpp
+
+    TEST_NAME lookuporchestratorjobtest
+
+    LINK_LIBRARIES
+    KAccountAutoconfigStatic
+    Qt6::Test
+    Qt6::Network
+)
+
 ecm_add_tests(
         clientconfigstructtest.cpp
 
@@ -65,3 +77,4 @@ ecm_add_tests(
 target_compile_definitions(autoconfigparsertest PRIVATE TEST_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data")
 target_compile_definitions(emailproviderlookupjobtest PRIVATE TEST_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data")
 target_compile_definitions(ispdbproviderlookupjobtest PRIVATE TEST_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data")
+target_compile_definitions(lookuporchestratorjobtest PRIVATE TEST_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data")
