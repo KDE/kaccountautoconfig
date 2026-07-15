@@ -211,6 +211,26 @@ private Q_SLOTS:
                 }
             };
 
+        QTest::newRow("special_urls.xml")<< QStringLiteral("special_urls.xml") << ClientConfig{
+            .version="1.2"_L1,
+            .serversByProtocol = {
+                {"carddav"_L1,
+                    QList{Server{
+                        .type = "carddav"_L1,
+                        .url = QUrl("https://contacts.example.com/remote.php/Distributed Authoring and Versioning!"_L1),
+                        .authentications = {{.method = "basic"_L1}},
+                        .username = "%EMAILADDRESS%"_L1
+                }}},
+                {"caldav"_L1,
+                    QList{Server{
+                        .type = "caldav"_L1,
+                        .url = QUrl("https://calendar.example.com/remote.php/Distributed%20Authoring%20and%20Versioning%21"_L1),
+                        .authentications = {{.method = "basic"_L1}},
+                        .username = "%EMAILADDRESS%"_L1
+                }}},
+            }
+        };
+
         // clang-format on
     }
 

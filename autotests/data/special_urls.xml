@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<clientConfig version="1.2">
+    <addressbook type="carddav">
+        <url>https://contacts.example.com/remote.php/Distributed Authoring and Versioning!</url>
+        <authentication>basic</authentication>
+        <username>%EMAILADDRESS%</username>
+    </addressbook>
+    <addressbook type="caldav">
+        <url>https://calendar.example.com/remote.php/Distributed%20Authoring%20and%20Versioning%21</url>
+        <authentication>basic</authentication>
+        <username>%EMAILADDRESS%</username>
+    </addressbook>
+</clientConfig>
