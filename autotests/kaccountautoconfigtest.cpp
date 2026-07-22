@@ -15,28 +15,8 @@ class KAccountAutoconfigTest : public QObject
 private Q_SLOTS:
     void testInit()
     {
-        const auto email = QStringLiteral("test@example.com");
-        const auto password = QStringLiteral("test");
         const auto job = new KAccountAutoconfigJob(this);
-        // 6 protocols for the moment
-        Q_ASSERT(job->servers().size() == 6);
-
-        std::ranges::for_each(job->servers(), [](const auto &server) {
-            // default value for all servers
-            QCOMPARE(server.status(), KAutoconfigServer::Status::None);
-            QCOMPARE(server.authenticationType(), KAutoconfigServer::UnknownAuthentication);
-            QCOMPARE(server.socketType(), KAutoconfigServer::UnknownSocketType);
-        });
-    }
-
-    void testGetServer()
-    {
-        const auto job = new KAccountAutoconfigJob(this);
-        const auto imapServer = job->getServer(KAutoconfigServer::Protocol::IMAP);
-        QCOMPARE(imapServer.protocol(), KAutoconfigServer::Protocol::IMAP);
-        QCOMPARE(imapServer.status(), KAutoconfigServer::Status::None);
-        QCOMPARE(imapServer.authenticationType(), KAutoconfigServer::UnknownAuthentication);
-        QCOMPARE(imapServer.socketType(), KAutoconfigServer::UnknownSocketType);
+        Q_ASSERT(job->servers().size() == 0);
     }
 };
 

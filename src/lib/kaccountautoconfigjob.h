@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <KJob>
+#include <KCompositeJob>
 
 #include "kautoconfigserver.h"
 
@@ -14,7 +14,7 @@
 
 class KAccountAutoconfigJobPrivate;
 
-class KACCOUNTAUTOCONFIG_EXPORT KAccountAutoconfigJob : public KJob
+class KACCOUNTAUTOCONFIG_EXPORT KAccountAutoconfigJob : public KCompositeJob
 {
     Q_OBJECT
 
@@ -25,24 +25,17 @@ public:
 
     void start() override;
 
-    [[nodiscard]] QString password() const;
-    void setPassword(const QString &newPassword);
-
     [[nodiscard]] QString email() const;
     void setEmail(const QString &newEmail);
 
     /*!
-     * \brief Get all servers.
+     * \brief Get all servers ordered by priority.
      *
-     * Note that by design, The job maintains one server for each protocol. Initially, all servers are created with Status::None, indicating no action has been
-     * performed yet.
+     * The client should carefully handle the order.
+     * For example, a POP3 server should be preferred over an IMAP server if the POP3 server is first in the list.
+     * Note also that multiple servers can be returned for a given protocol and the order matters also in this case.
      */
     [[nodiscard]] QList<KAutoconfigServer> servers() const;
-
-    /*!
-     * Retrieve the server for the given protocol.
-     */
-    KAutoconfigServer getServer(KAutoconfigServer::Protocol protocol) const;
 
 private:
     std::unique_ptr<KAccountAutoconfigJobPrivate> d;

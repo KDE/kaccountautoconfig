@@ -38,23 +38,6 @@ public:
         Last
     };
 
-    enum Status {
-        /*!
-         * None action hasn't been done yet.
-         * Default value
-         */
-        None,
-        /*!
-         * The password, email are valid for the given url, protocol, and authentication type.
-         */
-        LoginSuccess,
-
-        /*!
-         * password or email are invalid with the url.
-         */
-        BadCredentials
-    };
-
     enum AuthenticationType {
         /*!
          * Default value
@@ -95,12 +78,6 @@ public:
      * The protocol of the server, @see Protocol
      */
     [[nodiscard]] Protocol protocol() const;
-
-    /*!
-     * The status after a login test, @see Status
-     */
-    [[nodiscard]] Status status() const;
-    void setStatus(Status newStatus);
 
     /*!
      * Authentication method to use to connect to the sever, @see AuthenticationType

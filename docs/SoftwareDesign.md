@@ -177,7 +177,7 @@ Here is an example configuration file (JSON format):
 - **GUI-less** library
 - Must integrate into account-wizard and KCM
 - Provides the data needed to create resources
-- Return multiple servers from a single mail/password pair
+- Return multiple servers from a single email
 
 The library is limited to:
 
@@ -204,39 +204,31 @@ Some others values may be added
 
 ## PUBLIC API Design
 
-Basically the public api is a KJob that will return a list of servers. One server is returned per protocol and will
-contain the information needed to configure a resource or an account.
+Basically, the public api is a KCompositeJob that will return a list of servers ordered by priority.
 
 PSEUDO CODE
 
 ```
-Class AutoConfigJob: KJob
-  AutoConfigJob(email, password)
+Class AutoConfigJob: KCompositeJob
+  AutoConfigJob(email)
 
-  // Returns an element by protocol, meaning only one element per protocol is available.
-  GetServer(Protocol protocol)
-  // Returns all elements
+  // Returns all servers ordered by priority.
   GetServers()
-
-  Signal:
-    Progress(int progress, Element element)
-    Error(Enum error)
 
 Class Server:
   Enum Protocol           // IMAP, POP3, etc.
   URL url
   Enum authenticationType // basic, etc
-  bool   isValid()       // Indicates that the login succeeded (implying everything works) with the authenticationType, aka status == LOGIN_SUCCESS
-  Enum   Status        //
+  bool   isValid()       // Indicates that the server is valid for the given protocol.
 ```
 
-The library returns at most one server per protocol. This is because:
+The library returns a list of servers ordered. This is because:
 
-- The PACC RFC prohibits having multiple servers with the same protocol
-- The autoconfig RFC allows multiple servers with the same protocol, where the first occurrence takes priority
+- The autconfig RFC allows multiple servers with the same protocol, where the first occurrence takes priority. Also, the protocol order is important.
+- The PACC RFC does not allow multiple servers with the same protocol, but a single server can have multiple authentication types ordered by priority.
 
-To resolve this difference, the library follows the PACC RFC constraint while honoring the autoconfig RFC's priority
-rule: when multiple servers with the same protocol are found, only the first one is kept.
+So the list of servers will be ordered by priority. The client should take care of the order.
+
 
 ### JOB Error Handling
 
@@ -251,21 +243,6 @@ Enum JobError:
 
 Note: By default, the job will have all servers (one per protocol) marked as invalid. The client should check job status
 before checking the servers status.
-
-### Status Handling
-
-```
-Enum Status:
-  // The login test succeeded, so the configuration is correct
-  LOGIN_SUCCESS
-  // the credentials are incorrect
-  BAD_CREDENTIALS
-  // probably many others
-```
-
-Note: with the same mail/password pair, one element may have the status LOGIN_SUCCESS while another has BAD_CREDENTIALS.
-For example, the IMAP and SMTP servers with LOGIN_SUCCESS, and the CalDAV element with BAD_CREDENTIALS. It is up to the
-client to determine whether this is a problem.
 
 ### Configuration File Resolution Strategy
 
@@ -293,7 +270,8 @@ local file on disk (following the RFC format) in JSON or XML.
 ### User Validation
 
 The RFC clearly states that the user must confirm the configuration and only then perform the login test. To avoid
-back-and-forth, the Job will validate the login before the user confirms.
+back-and-forth, and heavy dependency between this lib and other tier 3 from KDE, the lib will NOT validate the login.
+The client application is responsible for presenting the configuration to the user, getting their confirmation, and performing the login validation.
 
 ## Ticket Breakdown
 
@@ -305,8 +283,7 @@ back-and-forth, the Job will validate the login before the user confirms.
 - Implement MX call
 - Implement local file call
 - Implement resolution strategy, aka chaining the calls
-- Implement the login test
-- Glue the resolution strategy and the login test to the public API
+- Used the lib in account-wizard with a login test
 - E2E Tests
 
 **Note that, at first, only the AutoConfig RFC will be implemented. The PACC specification is useful for the design, but

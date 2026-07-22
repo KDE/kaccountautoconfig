@@ -13,7 +13,6 @@ public:
         : m_protocol(protocol) { };
     QUrl m_url;
     KAutoconfigServer::Protocol m_protocol;
-    KAutoconfigServer::Status m_status = KAutoconfigServer::None;
     KAutoconfigServer::AuthenticationType m_authenticationType = KAutoconfigServer::UnknownAuthentication;
     KAutoconfigServer::SocketType m_socketType = KAutoconfigServer::UnknownSocketType;
 };
@@ -44,16 +43,6 @@ KAutoconfigServer::Protocol KAutoconfigServer::protocol() const
     return d->m_protocol;
 }
 
-KAutoconfigServer::Status KAutoconfigServer::status() const
-{
-    return d->m_status;
-}
-
-void KAutoconfigServer::setStatus(Status newStatus)
-{
-    d->m_status = newStatus;
-}
-
 KAutoconfigServer::AuthenticationType KAutoconfigServer::authenticationType() const
 {
     return d->m_authenticationType;
@@ -76,5 +65,5 @@ void KAutoconfigServer::setSocketType(SocketType newSocketType)
 
 bool KAutoconfigServer::isValid() const
 {
-    return d->m_status == LoginSuccess && d->m_url.isValid() && d->m_authenticationType != UnknownAuthentication;
+    return d->m_url.isValid() && d->m_authenticationType != UnknownAuthentication;
 }
