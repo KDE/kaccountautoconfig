@@ -2,15 +2,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 include(ECMAddTests)
 
-ecm_add_tests(
-    kaccountautoconfigtest.cpp
-    kautoconfigservertest.cpp
-
-    LINK_LIBRARIES
-    KAccountAutoconfig
-    Qt6::Test
-)
-
+# self test on stub
 ecm_add_test(
     fakeservertest.cpp
     fakeserver/stubnetworkaccessmanager.cpp
@@ -22,59 +14,30 @@ ecm_add_test(
     Qt6::Network
 )
 
-ecm_add_test(
-    emailproviderlookupjobtest.cpp
-    fakeserver/stubnetworkaccessmanager.cpp
+# unit test
+macro(ACCOUNTAUTOCONFIG_UNIT_TESTS)
+    foreach(_testname ${ARGN})
+        ecm_add_test(
+            ${_testname}.cpp
+            fakeserver/stubnetworkaccessmanager.cpp
 
-    TEST_NAME emailproviderlookupjobtest
+            TEST_NAME ${_testname}
 
-    LINK_LIBRARIES
-    KAccountAutoconfigStatic
-    Qt6::Test
-    Qt6::Network
+            LINK_LIBRARIES
+            KAccountAutoconfigStatic
+            Qt6::Network
+            Qt6::Test
+        )
+        target_compile_definitions(${_testname} PRIVATE TEST_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data")
+    endforeach()
+endmacro()
+
+accountautoconfig_unit_tests(
+    autoconfigparsertest
+    clientconfigstructtest
+    emailproviderlookupjobtest
+    ispdbproviderlookupjobtest
+    lookuporchestratorjobtest
+    kaccountautoconfigtest
+    kautoconfigservertest
 )
-
-ecm_add_test(
-    ispdbproviderlookupjobtest.cpp
-    fakeserver/stubnetworkaccessmanager.cpp
-
-    TEST_NAME ispdbproviderlookupjobtest
-
-    LINK_LIBRARIES
-    KAccountAutoconfigStatic
-    Qt6::Test
-    Qt6::Network
-)
-
-ecm_add_test(
-    lookuporchestratorjobtest.cpp
-    fakeserver/stubnetworkaccessmanager.cpp
-
-    TEST_NAME lookuporchestratorjobtest
-
-    LINK_LIBRARIES
-    KAccountAutoconfigStatic
-    Qt6::Test
-    Qt6::Network
-)
-
-ecm_add_tests(
-        clientconfigstructtest.cpp
-
-        LINK_LIBRARIES
-        KAccountAutoconfigStatic
-        Qt6::Test
-)
-
-ecm_add_tests(
-        autoconfigparsertest.cpp
-
-        LINK_LIBRARIES
-        KAccountAutoconfigStatic
-        Qt6::Test
-)
-
-target_compile_definitions(autoconfigparsertest PRIVATE TEST_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data")
-target_compile_definitions(emailproviderlookupjobtest PRIVATE TEST_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data")
-target_compile_definitions(ispdbproviderlookupjobtest PRIVATE TEST_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data")
-target_compile_definitions(lookuporchestratorjobtest PRIVATE TEST_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data")
