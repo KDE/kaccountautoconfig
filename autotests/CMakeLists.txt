@@ -37,7 +37,6 @@ accountautoconfig_unit_tests(
     clientconfigstructtest
     emailproviderlookupjobtest
     ispdbproviderlookupjobtest
-    lookuporchestratorjobtest
     kaccountautoconfigtest
     kautoconfigservertest
 )

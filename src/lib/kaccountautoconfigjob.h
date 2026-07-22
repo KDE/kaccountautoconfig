@@ -12,14 +12,18 @@
 
 #include <kaccountautoconfig_export.h>
 
+class QNetworkAccessManager;
 class KAccountAutoconfigJobPrivate;
 
 class KACCOUNTAUTOCONFIG_EXPORT KAccountAutoconfigJob : public KCompositeJob
 {
     Q_OBJECT
 
+    friend class KAccountAutoconfigJobPrivate;
+
 public:
     explicit KAccountAutoconfigJob(QObject *parent = nullptr);
+    explicit KAccountAutoconfigJob(QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
 
     ~KAccountAutoconfigJob() override;
 
@@ -38,5 +42,7 @@ public:
     [[nodiscard]] QList<KAutoconfigServer> servers() const;
 
 private:
+    void slotResult(KJob *job) override;
+
     std::unique_ptr<KAccountAutoconfigJobPrivate> d;
 };

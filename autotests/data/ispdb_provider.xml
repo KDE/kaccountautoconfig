@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<clientConfig version="1.2">
+    <emailProvider id="ispdb.provider.com">
+        <domain>ispdb.provider.com</domain>
+
+        <displayName>ispdb provider</displayName>
+
+        <incomingServer type="imap">
+            <hostname>ispdb.provider.com</hostname>
+            <port>993</port>
+            <socketType>SSL</socketType>
+            <authentication>password-cleartext</authentication>
+            <username>%EMAILADDRESS%</username>
+        </incomingServer>
+
+    </emailProvider>
+
+</clientConfig>

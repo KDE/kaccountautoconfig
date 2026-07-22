@@ -28,6 +28,12 @@ KAutoconfigServer &KAutoconfigServer::operator=(const KAutoconfigServer &other) 
 KAutoconfigServer::KAutoconfigServer(KAutoconfigServer &&other) noexcept = default;
 KAutoconfigServer &KAutoconfigServer::operator=(KAutoconfigServer &&other) noexcept = default;
 
+bool KAutoconfigServer::operator==(const KAutoconfigServer &other) const
+{
+    return d->m_url == other.d->m_url && d->m_protocol == other.d->m_protocol && d->m_socketType == other.d->m_socketType
+        && d->m_authenticationType == other.d->m_authenticationType;
+};
+
 QUrl KAutoconfigServer::url() const
 {
     return d->m_url;
@@ -66,4 +72,13 @@ void KAutoconfigServer::setSocketType(SocketType newSocketType)
 bool KAutoconfigServer::isValid() const
 {
     return d->m_url.isValid() && d->m_authenticationType != UnknownAuthentication;
+}
+
+QDebug operator<<(QDebug debug, const KAutoconfigServer &server)
+{
+    QDebugStateSaver saver(debug);
+    debug.nospace() << "KAutoconfigServer("
+                    << "protocol=" << server.protocol() << ", url=" << server.url() << ", auth=" << server.authenticationType()
+                    << ", socketType=" << server.socketType() << ", valid=" << server.isValid() << ')';
+    return debug;
 }

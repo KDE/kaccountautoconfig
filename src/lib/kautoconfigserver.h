@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <QDebug>
 #include <QSharedDataPointer>
 #include <QUrl>
 
@@ -18,24 +19,18 @@ class KAutoconfigServerPrivate;
  * \inmodule KAutoconfigAccount
  * \brief This class holds information about a server.
  *
- * All information needed to connect to a server is stored in this class, except for the password and the email that are present in the Job.
+ * All information needed to connect to a server is stored in this class, except for the email that is present in the Job.
  * Server should be understood as the RFC https://www.ietf.org/archive/id/draft-bucksch-mailmaint-pacc-00.html#name-servers
  */
 class KACCOUNTAUTOCONFIG_EXPORT KAutoconfigServer
 {
 public:
     enum Protocol {
-        JMAP,
         IMAP,
         POP3,
         SMTP,
         CalDAV,
-        CardDAV,
-        /*!
-         * Used to check if KAccountAutoconfigJob implements all protocols (at least with the default value).
-         * Should always be the last element and never specifies values for this enum.
-         */
-        Last
+        CardDAV
     };
 
     enum AuthenticationType {
@@ -44,7 +39,9 @@ public:
          */
         UnknownAuthentication,
         Basic,
-        Digest
+        Digest,
+        PasswordCleartext,
+        PasswordEncrypted,
     };
 
     enum SocketType {
@@ -67,7 +64,7 @@ public:
     KAutoconfigServer &operator=(const KAutoconfigServer &other);
     KAutoconfigServer(KAutoconfigServer &&other) noexcept;
     KAutoconfigServer &operator=(KAutoconfigServer &&other) noexcept;
-
+    bool operator==(const KAutoconfigServer &other) const;
     /*!
      * The url to connect to the sever. Port include.
      */
@@ -99,3 +96,5 @@ public:
 private:
     QSharedDataPointer<KAutoconfigServerPrivate> d;
 };
+
+KACCOUNTAUTOCONFIG_EXPORT QDebug operator<<(QDebug debug, const KAutoconfigServer &server);

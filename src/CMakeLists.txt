@@ -17,7 +17,6 @@ set(KAccountAutoconfig_LIB_SRCS
     lib/emailproviderlookupjob_p.h
     lib/autoconfigparser_p.h
     lib/ispdbproviderlookupjob_p.h
-    lib/lookuporchestratorjob_p.h
 )
 
 target_sources(
