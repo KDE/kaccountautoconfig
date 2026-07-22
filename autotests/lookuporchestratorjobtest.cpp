@@ -10,8 +10,8 @@
 
 #include <QTest>
 
-#include "lib/LookupProviderJobBase_p.h"
-#include "lib/lookuporchestratorjob_p.h"
+#include "LookupProviderJobBase_p.h"
+#include "lookuporchestratorjob_p.h"
 
 using Responses = StubNetworkAccessManager::Responses;
 

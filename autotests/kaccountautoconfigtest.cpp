@@ -4,6 +4,8 @@
    SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include "fakeserver/dnsstubhelper.h"
+
 #include <QSignalSpy>
 #include <QStandardPaths>
 
@@ -22,10 +24,18 @@ class KAccountAutoconfigTest : public QObject
 
     const QUrl validWellKnownUrl = QUrl(QStringLiteral("https://kde.org/.well-known/autoconfig/mail/config-v1.1.xml"));
     const QUrl validIspdbUrl = QUrl(QStringLiteral("https://v1.ispdb.net/kde.org"));
+
+    // to make a difference with ispdb provider, dns lookup will return example.com and by doing so MX provider should search for example.com
+    const QString dnsLookupValid = QStringLiteral("test.example.com");
+    const QUrl validMXProviderUrl = QUrl(QStringLiteral("https://v1.ispdb.net/example.com"));
+
     const QString validEmail = QStringLiteral("test@kde.org");
+    const QString validDomain = validEmail.split(u'@').last();
+
     QByteArray validConfiguration;
     QByteArray validEmailProviderConfiguration;
     QByteArray validIspdbConfiguration;
+    QByteArray validMXConfiguration;
 
 private Q_SLOTS:
     void testInit()
@@ -70,6 +80,10 @@ private Q_SLOTS:
         QFile validIspdbProviderConfigurationFile(QDir(QString::fromLatin1(TEST_DATA_DIR)).filePath(QStringLiteral("ispdb_provider.xml")));
         QVERIFY(validIspdbProviderConfigurationFile.open(QIODevice::ReadOnly));
         validIspdbConfiguration = validIspdbProviderConfigurationFile.readAll();
+
+        QFile validMxProviderConfigurationFile(QDir(QString::fromLatin1(TEST_DATA_DIR)).filePath(QStringLiteral("ispdb_provider.xml")));
+        QVERIFY(validMxProviderConfigurationFile.open(QIODevice::ReadOnly));
+        validMXConfiguration = validMxProviderConfigurationFile.readAll();
     }
 
     /*!
@@ -98,6 +112,11 @@ private Q_SLOTS:
         localProviderServer.setAuthenticationType(KAutoconfigServer::PasswordCleartext);
         localProviderServer.setSocketType(KAutoconfigServer::SSL);
 
+        KAutoconfigServer MXProviderServer(KAutoconfigServer::IMAP);
+        MXProviderServer.setUrl(QUrl("imap://mx.provider.com:993"_L1));
+        MXProviderServer.setAuthenticationType(KAutoconfigServer::PasswordCleartext);
+        MXProviderServer.setSocketType(KAutoconfigServer::SSL);
+
         // the orders should be the same as in the XML
         QTest::newRow("email_provider_valid") << false
                                               << Responses{{{validWellKnownUrl, validEmailProviderConfiguration}, {validIspdbUrl, validIspdbConfiguration}}}
@@ -111,7 +130,12 @@ private Q_SLOTS:
                                                    << Responses{{{validWellKnownUrl, validEmailProviderConfiguration, 404},
                                                                  {validIspdbUrl, validIspdbConfiguration, 404}}}
                                                    << QList{localProviderServer};
-        ;
+
+        QTest::newRow("mx_provider_valid") << false
+                                           << Responses{{{validWellKnownUrl, validEmailProviderConfiguration, 404},
+                                                         {validIspdbUrl, validIspdbConfiguration, 404},
+                                                         {validMXProviderUrl, validMXConfiguration, 200}}}
+                                           << QList{ispdbProviderServer};
     }
 
     void testAccountAutoconfigProvider()
@@ -122,6 +146,7 @@ private Q_SLOTS:
 
         StubNetworkAccessManager stub;
         stub.addResponses(responses);
+        DnsStubHelper dnsStubData(validDomain, dnsLookupValid);
 
         if (searchLocalFile) {
             setLocalConfigurationFile();
@@ -227,6 +252,7 @@ private Q_SLOTS:
         StubNetworkAccessManager stub;
         stub.addResponse({validWellKnownUrl, configuration});
         removeLocalConfigurationFile();
+        DnsStubHelper dnsStubData({}, {});
 
         const auto job = new KAccountAutoconfigJob(&stub, this);
         job->setEmail(validEmail);
@@ -251,6 +277,7 @@ private Q_SLOTS:
         StubNetworkAccessManager stub;
         stub.addResponses({{validWellKnownUrl, validConfiguration, 404}, {validIspdbUrl, validConfiguration, 404}});
         removeLocalConfigurationFile();
+        DnsStubHelper dnsStubData({}, {});
 
         const auto job = new KAccountAutoconfigJob(&stub, this);
         job->setEmail(validEmail);

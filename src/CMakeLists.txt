@@ -21,6 +21,9 @@ set(KAccountAutoconfig_LIB_SRCS
     lib/ispdbproviderlookupjob_p.h
     lib/lookuporchestratorjob_p.h
     lib/localfileproviderlookupjob_p.h
+    lib/autoconfigserverhelper_p.h
+    lib/mxproviderlookupjob.cpp
+    lib/mxproviderlookupjob_p.h
 )
 
 target_sources(
@@ -39,6 +42,7 @@ target_link_libraries(
     PUBLIC
         KF6::CoreAddons # for KJob
         Qt6::Network
+        PkgConfig::Libpsl # to extract TLD
 )
 
 set_target_properties(
@@ -88,19 +92,14 @@ install(
 if(BUILD_TESTING)
     add_library(KAccountAutoconfigStatic STATIC)
     target_sources(KAccountAutoconfigStatic PRIVATE ${KAccountAutoconfig_LIB_SRCS})
+    target_compile_definitions(KAccountAutoconfigStatic PUBLIC KACCOUNTAUTOCONFIG_STATIC_DEFINE=1)
 
     target_link_libraries(
         KAccountAutoconfigStatic
         PUBLIC
             KF6::CoreAddons # for KJob
             Qt6::Network
-    )
-    # Needed for windows dll linkage error on static
-    set_target_properties(
-        KAccountAutoconfigStatic
-        PROPERTIES
-            COMPILE_FLAGS
-                -DKACCOUNTAUTOCONFIG_STATIC_DEFINE=1
+            PkgConfig::Libpsl
     )
     ecm_qt_declare_logging_category(KAccountAutoconfigStatic HEADER kaccountautoconfig_debug.h IDENTIFIER KACCOUNTAUTOCONFIG_LOG CATEGORY_NAME org.kde.pim.kaccountautoconfig)
 endif()

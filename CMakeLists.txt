@@ -42,6 +42,9 @@ find_package(Qt6Core ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
 find_package(Qt6 ${REQUIRED_QT_VERSION} REQUIRED COMPONENTS Network)
 find_package(KF6CoreAddons ${KF_MIN_VERSION} CONFIG REQUIRED)
 
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(Libpsl REQUIRED IMPORTED_TARGET libpsl)
+
 set(EXCLUDE_DEPRECATED_BEFORE_AND_AT
     0
     CACHE STRING

@@ -40,6 +40,8 @@ public:
     void start() override;
 
 protected:
+    void addPlaceHolderSubstitution(const QString &placeholder, const QString &value);
+
     std::optional<AutoConfigParser::ClientConfig> m_configurationData;
     QString m_configurationSource;
     QString m_email;

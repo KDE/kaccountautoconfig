@@ -18,12 +18,12 @@ private Q_SLOTS:
     void testFakeServer()
     {
         QUrl url(QStringLiteral("https://example.com"));
-        StubNetworkAccessManager stub;
-        stub.addResponse({url, "some data"});
-        QSignalSpy spyManagerFinished(&stub, &StubNetworkAccessManager::finished);
+        StubNetworkAccessManager networkStub;
+        networkStub.addResponse({url, "some data"});
+        QSignalSpy spyManagerFinished(&networkStub, &StubNetworkAccessManager::finished);
 
-        // request with an url present in the stub
-        const auto reply = stub.get(QNetworkRequest(QUrl(url)));
+        // request with an url present in the networkStub
+        const auto reply = networkStub.get(QNetworkRequest(QUrl(url)));
         QSignalSpy spyReplyFinished(reply, &QNetworkReply::finished);
         QSignalSpy spyReplyErrorOccurred(reply, &QNetworkReply::errorOccurred);
 
@@ -37,8 +37,8 @@ private Q_SLOTS:
 
         reply->deleteLater();
 
-        // request with an url not present in the stub
-        const auto replyKo = stub.get(QNetworkRequest(QUrl(QStringLiteral("https://false.com"))));
+        // request with an url not present in the networkStub
+        const auto replyKo = networkStub.get(QNetworkRequest(QUrl(QStringLiteral("https://false.com"))));
         QSignalSpy spyReplyKoFinished(replyKo, &QNetworkReply::finished);
         QSignalSpy spyReplyKoErrorOccurred(replyKo, &QNetworkReply::errorOccurred);
 

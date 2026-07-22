@@ -9,7 +9,7 @@
 #include <QSignalSpy>
 #include <QTest>
 
-#include "lib/ispdbproviderlookupjob_p.h"
+#include "ispdbproviderlookupjob_p.h"
 
 using Responses = StubNetworkAccessManager::Responses;
 

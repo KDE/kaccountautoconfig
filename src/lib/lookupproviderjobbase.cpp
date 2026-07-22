@@ -48,11 +48,16 @@ LookupProviderJobBase::LookupProviderJobBase(const QString &email, QNetworkAcces
     , m_email(email)
     , m_emailDomain(email.split(u'@').last())
 {
-    m_placeHolderSubstitutions.insert(QStringLiteral("EMAILDOMAIN"), m_emailDomain);
-    m_placeHolderSubstitutions.insert(QStringLiteral("EMAILADDRESS"), m_email);
+    addPlaceHolderSubstitution(QStringLiteral("EMAILDOMAIN"), m_emailDomain);
+    addPlaceHolderSubstitution(QStringLiteral("EMAILADDRESS"), m_email);
 }
 
 void LookupProviderJobBase::start()
 {
     QMetaObject::invokeMethod(this, &LookupProviderJobBase::lookup, Qt::QueuedConnection);
+}
+
+void LookupProviderJobBase::addPlaceHolderSubstitution(const QString &placeholder, const QString &value)
+{
+    m_placeHolderSubstitutions.insert(placeholder, value);
 }

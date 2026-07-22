@@ -29,6 +29,7 @@ macro(ACCOUNTAUTOCONFIG_UNIT_TESTS)
             Qt6::Test
         )
         target_compile_definitions(${_testname} PRIVATE TEST_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data")
+        target_include_directories(${_testname} PRIVATE "${CMAKE_SOURCE_DIR}/src/lib")
     endforeach()
 endmacro()
 
@@ -40,4 +41,5 @@ accountautoconfig_unit_tests(
     kaccountautoconfigtest
     kautoconfigservertest
     localfileproviderlookupjobtest
+    mxproviderlookuptest
 )

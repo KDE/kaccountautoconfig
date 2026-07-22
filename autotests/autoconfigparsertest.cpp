@@ -4,7 +4,7 @@
  *  SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
-#include "lib/autoconfigparser_p.h"
+#include "autoconfigparser_p.h"
 #include <QTest>
 
 using namespace Qt::StringLiterals;

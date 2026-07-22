@@ -14,12 +14,15 @@
 #include "localfileproviderlookupjob_p.h"
 #include <QNetworkAccessManager>
 
+#include "mxproviderlookupjob_p.h"
+
 using namespace AutoconfigServerHelper;
 
 enum ProviderIndex {
     LocalProvider = 0,
     EmailProvider,
     ISPDBProvider,
+    MXProvider,
     // Add more providers here as needed (e.g., MXProvider)
     ProviderCount // Always keep this last
 };
@@ -70,6 +73,8 @@ LookupProviderJobBase *KAccountAutoconfigJobPrivate::createProviderJob(int index
         return new LookupEmailProviderJob(m_email, m_networkAccessManager);
     case ISPDBProvider:
         return new IspdbProviderLookupJob(m_email, m_networkAccessManager);
+    case MXProvider:
+        return new MXProviderLookupJob(m_email, m_networkAccessManager);
     default:
         Q_UNREACHABLE();
     }
@@ -131,12 +136,14 @@ QList<KAutoconfigServer> KAccountAutoconfigJob::servers() const
 void KAccountAutoconfigJob::slotResult(KJob *job)
 {
     if (job && job->error() == NoError) {
+        qWarning() << "Got configuration from provider" << d->m_currentProviderIndex;
         d->m_providerJob = qobject_cast<LookupProviderJobBase *>(job);
         d->parseServers();
         emitResult();
         return;
     }
 
+    removeSubjob(job);
     d->m_currentProviderIndex++;
     d->tryNextProvider();
 }

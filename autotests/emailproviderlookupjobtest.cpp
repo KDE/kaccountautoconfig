@@ -4,8 +4,8 @@
    SPDX-License-Identifier: GPL-2.0-or-later
  */
 
+#include "emailproviderlookupjob_p.h"
 #include "fakeserver/stubnetworkaccessmanager.h"
-#include "lib/emailproviderlookupjob_p.h"
 
 #include <QSignalSpy>
 #include <QTest>
@@ -48,10 +48,10 @@ private Q_SLOTS:
     void testSimpleValidConfigurationFromMailProvider()
     {
         const StubNetworkAccessManager::Response response{validAutoConfigUrl, validConfiguration, 200};
-        StubNetworkAccessManager stub;
-        stub.addResponse(response);
+        StubNetworkAccessManager networkStub;
+        networkStub.addResponse(response);
 
-        const auto job = new LookupEmailProviderJob(validEmail, &stub);
+        const auto job = new LookupEmailProviderJob(validEmail, &networkStub);
         QSignalSpy spyJob(job, &LookupEmailProviderJob::result);
 
         job->start();
@@ -104,10 +104,10 @@ private Q_SLOTS:
     {
         QFETCH(Responses, responses);
         QFETCH(QUrl, expectedSource);
-        StubNetworkAccessManager stub;
-        stub.addResponses(responses);
+        StubNetworkAccessManager networkStub;
+        networkStub.addResponses(responses);
 
-        const auto job = new LookupEmailProviderJob(validEmail, &stub);
+        const auto job = new LookupEmailProviderJob(validEmail, &networkStub);
         QSignalSpy spyJob(job, &LookupEmailProviderJob::result);
 
         job->start();
@@ -125,10 +125,10 @@ private Q_SLOTS:
         const Responses responses{
             {{validAutoConfigUrl, invalidConfiguration}, {validWellKnownUrl, invalidConfiguration}, {validAutoconfigLegacyUrl, invalidConfiguration}}};
 
-        StubNetworkAccessManager stub;
-        stub.addResponses(responses);
+        StubNetworkAccessManager networkStub;
+        networkStub.addResponses(responses);
 
-        const auto job = new LookupEmailProviderJob(validEmail, &stub);
+        const auto job = new LookupEmailProviderJob(validEmail, &networkStub);
         QSignalSpy spyJob(job, &LookupEmailProviderJob::result);
 
         job->start();
@@ -146,10 +146,10 @@ private Q_SLOTS:
         const Responses responses{
             {{validAutoConfigUrl, validConfiguration, 404}, {validWellKnownUrl, validConfiguration, 404}, {validAutoconfigLegacyUrl, validConfiguration, 404}}};
 
-        StubNetworkAccessManager stub;
-        stub.addResponses(responses);
+        StubNetworkAccessManager networkStub;
+        networkStub.addResponses(responses);
 
-        const auto job = new LookupEmailProviderJob(validEmail, &stub);
+        const auto job = new LookupEmailProviderJob(validEmail, &networkStub);
         QSignalSpy spyJob(job, &LookupEmailProviderJob::result);
 
         job->start();
@@ -166,10 +166,10 @@ private Q_SLOTS:
     {
         const Responses responses{
             {{validAutoConfigUrl, validConfiguration}, {validWellKnownUrl, validConfiguration}, {validAutoconfigLegacyUrl, validConfiguration}}};
-        StubNetworkAccessManager stub;
-        stub.addResponses(responses);
+        StubNetworkAccessManager networkStub;
+        networkStub.addResponses(responses);
 
-        const auto job = new LookupEmailProviderJob(invalidEmail, &stub);
+        const auto job = new LookupEmailProviderJob(invalidEmail, &networkStub);
         QSignalSpy spyJob(job, &LookupEmailProviderJob::result);
 
         job->start();

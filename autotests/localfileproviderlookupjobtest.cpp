@@ -8,7 +8,7 @@
 #include <QStandardPaths>
 #include <QTest>
 
-#include "lib/localfileproviderlookupjob_p.h"
+#include "localfileproviderlookupjob_p.h"
 
 /*!
  * Test the local file provider lookup job.

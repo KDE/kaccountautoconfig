@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+    SPDX-FileCopyrightText: 2026 Arnaud Chirat <aci@enioka.com>
+    SPDX-FileCopyrightText: 2026 Kenny Lorin <kenny.lorin@enioka.com>
+
+    SPDX-License-Identifier: GPL-2.0-or-later
+-->
+<clientConfig version="1.2">
+    <emailProvider id="mx.provider.com">
+        <domain>mx.provider.com</domain>
+
+        <displayName>MX provider</displayName>
+
+        <incomingServer type="imap">
+            <hostname>mx.provider.com</hostname>
+            <port>993</port>
+            <socketType>SSL</socketType>
+            <authentication>password-cleartext</authentication>
+            <username>%EMAILADDRESS%</username>
+        </incomingServer>
+
+    </emailProvider>
+
+</clientConfig>
