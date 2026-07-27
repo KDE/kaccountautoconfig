@@ -11,12 +11,14 @@
 #include "emailproviderlookupjob_p.h"
 #include "ispdbproviderlookupjob_p.h"
 #include "kautoconfigserver.h"
+#include "localfileproviderlookupjob_p.h"
 #include <QNetworkAccessManager>
 
 using namespace AutoconfigServerHelper;
 
 enum ProviderIndex {
-    EmailProvider = 0,
+    LocalProvider = 0,
+    EmailProvider,
     ISPDBProvider,
     // Add more providers here as needed (e.g., MXProvider)
     ProviderCount // Always keep this last
@@ -62,6 +64,8 @@ LookupProviderJobBase *KAccountAutoconfigJobPrivate::createProviderJob(int index
 {
     Q_ASSERT(index < ProviderCount);
     switch (index) {
+    case LocalProvider:
+        return new LocalFileProviderLookupJob(m_email, q);
     case EmailProvider:
         return new LookupEmailProviderJob(m_email, m_networkAccessManager);
     case ISPDBProvider:

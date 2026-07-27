@@ -5,6 +5,8 @@
  */
 
 #include <QSignalSpy>
+#include <QStandardPaths>
+
 #include <kaccountautoconfig/kaccountautoconfigjob.h>
 
 #include <QTest>
@@ -32,8 +34,31 @@ private Q_SLOTS:
         Q_ASSERT(job->servers().size() == 0);
     }
 
+    void setLocalConfigurationFile()
+    {
+        // dest file should be in an "isp" directory, and the filename should be the same as the domain name of the email, according to the rfc,
+        const QString validUserConfigPath = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + QStringLiteral("/isp/kde.org.xml");
+
+        // remove if exist
+        QFile::remove(validUserConfigPath);
+
+        QVERIFY(QDir(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation)).mkpath(QStringLiteral("isp/")));
+        QFile::copy(QDir(QString::fromLatin1(TEST_DATA_DIR)).filePath(QStringLiteral("local_file_provider.xml")), validUserConfigPath);
+    }
+
+    void removeLocalConfigurationFile()
+    {
+        // dest file should be in an "isp" directory, and the filename should be the same as the domain name of the email, according to the rfc,
+        const QString validUserConfigPath = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + QStringLiteral("/isp/kde.org.xml");
+
+        // remove if exist
+        QFile::remove(validUserConfigPath);
+    }
+
     void initTestCase()
     {
+        QStandardPaths::setTestModeEnabled(true);
+
         QFile validConfigurationFile(QDir(QString::fromLatin1(TEST_DATA_DIR)).filePath(QStringLiteral("example.xml")));
         QVERIFY(validConfigurationFile.open(QIODevice::ReadOnly));
         validConfiguration = validConfigurationFile.readAll();
@@ -54,6 +79,7 @@ private Q_SLOTS:
      */
     void testAccountAutoconfigProvider_data()
     {
+        QTest::addColumn<bool>("searchLocalFile");
         QTest::addColumn<Responses>("responses");
         QTest::addColumn<QList<KAutoconfigServer>>("expectedServers");
 
@@ -67,21 +93,41 @@ private Q_SLOTS:
         ispdbProviderServer.setAuthenticationType(KAutoconfigServer::PasswordCleartext);
         ispdbProviderServer.setSocketType(KAutoconfigServer::SSL);
 
+        KAutoconfigServer localProviderServer(KAutoconfigServer::IMAP);
+        localProviderServer.setUrl(QUrl("imap://local.provider.com:993"_L1));
+        localProviderServer.setAuthenticationType(KAutoconfigServer::PasswordCleartext);
+        localProviderServer.setSocketType(KAutoconfigServer::SSL);
+
         // the orders should be the same as in the XML
-        QTest::newRow("email_provider_valid") << Responses{{{validWellKnownUrl, validEmailProviderConfiguration}, {validIspdbUrl, validIspdbConfiguration}}}
+        QTest::newRow("email_provider_valid") << false
+                                              << Responses{{{validWellKnownUrl, validEmailProviderConfiguration}, {validIspdbUrl, validIspdbConfiguration}}}
                                               << QList{emailProviderServer};
-        QTest::newRow("ispdb_provider_valid") << Responses{{{validWellKnownUrl, validEmailProviderConfiguration, 404},
+        QTest::newRow("ispdb_provider_valid") << false
+                                              << Responses{{{validWellKnownUrl, validEmailProviderConfiguration, 404},
                                                             {validIspdbUrl, validIspdbConfiguration, 200}}}
                                               << QList{ispdbProviderServer};
+
+        QTest::newRow("local_file_provider_valid") << true
+                                                   << Responses{{{validWellKnownUrl, validEmailProviderConfiguration, 404},
+                                                                 {validIspdbUrl, validIspdbConfiguration, 404}}}
+                                                   << QList{localProviderServer};
+        ;
     }
 
     void testAccountAutoconfigProvider()
     {
+        QFETCH(bool, searchLocalFile);
         QFETCH(Responses, responses);
         QFETCH(QList<KAutoconfigServer>, expectedServers);
 
         StubNetworkAccessManager stub;
         stub.addResponses(responses);
+
+        if (searchLocalFile) {
+            setLocalConfigurationFile();
+        } else {
+            removeLocalConfigurationFile();
+        }
 
         const auto job = new KAccountAutoconfigJob(&stub, this);
         job->setEmail(validEmail);
@@ -180,6 +226,7 @@ private Q_SLOTS:
 
         StubNetworkAccessManager stub;
         stub.addResponse({validWellKnownUrl, configuration});
+        removeLocalConfigurationFile();
 
         const auto job = new KAccountAutoconfigJob(&stub, this);
         job->setEmail(validEmail);
