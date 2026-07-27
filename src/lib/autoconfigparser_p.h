@@ -12,7 +12,6 @@
 
 namespace AutoConfigParser
 {
-
 struct Documentation {
     QUrl url;
     QHash<QString, QString> descriptionByLanguage;
@@ -72,7 +71,7 @@ struct EmailProvider {
 struct ClientConfig {
     QString version;
     EmailProvider emailProvider;
-    QHash<QString, QList<Server>> serversByProtocol;
+    QList<Server> servers;
     OAuth2 oAuth2;
     QUrl clientConfigUpdate;
 

@@ -15,7 +15,6 @@ class AutoConfigParserTest : public QObject
     Q_OBJECT
 
 private Q_SLOTS:
-
     void test_successes_data()
     {
         QTest::addColumn<QString>("xmlName");
@@ -37,120 +36,88 @@ private Q_SLOTS:
                  .documentations =
                      {{.url = QUrl("https://www.example.com/help/mail/"_L1),
                        .descriptionByLanguage = {{"en"_L1, "Configure mail app for IMAP"_L1}, {"de"_L1, "Email mit IMAP konfigurieren"_L1}}}}},
-            .serversByProtocol =
+            .servers ={
                 {
-                    {"imap"_L1,
-                     QList{Server{
-                         .type = "imap"_L1,
-                         .authentications = {{.method = "password-cleartext"_L1}},
-                         .username = "%EMAILADDRESS%"_L1,
-                         .hostname = "imap.example.com"_L1,
-                         .port = 993,
-                         .socketType = "SSL"_L1,
-                     }}},
-                    {"pop3"_L1,
-                     QList{Server{
-                         .type = "pop3"_L1,
-                         .authentications = {{.method = "password-cleartext"_L1}},
-                         .username = "%EMAILADDRESS%"_L1,
-                         .hostname = "pop.example.com"_L1,
-                         .port = 995,
-                         .socketType = "SSL"_L1,
-                     }}},
-                    {"smtp"_L1,
-                     QList{Server{
-                         .type = "smtp"_L1,
-                         .authentications = {{.method = "password-cleartext"_L1}},
-                         .username = "%EMAILADDRESS%"_L1,
-                         .hostname = "smtp.googlemail.com"_L1,
-                         .port = 587,
-                         .socketType = "STARTTLS"_L1,
-                     }}},
-                    {"jmap"_L1,
-                     QList{Server{
-                         .type = "jmap"_L1,
-                         .url = QUrl("https://jmap.example.com"_L1),
-                         .authentications = {{.method = "OAuth2"_L1}},
-                         .username = "%EMAILADDRESS%"_L1,
-                     }}},
-                    {"ews"_L1,
-                     QList{Server{
-                         .type = "ews"_L1,
-                         .url = QUrl("https://mail.example.com/EWS/Exchange.asmx"_L1),
-                         .authentications =
-                             {
-                                 {.system = "http"_L1, .method = "Basic"_L1},
-                             },
-                         .username = "%EMAILADDRESS%"_L1,
-                     }}},
-                    {"activesync"_L1,
-                     QList{Server{
-                         .type = "activesync"_L1,
-                         .url = QUrl("https://mail.example.com/Microsoft-Server-ActiveSync"_L1),
-                         .authentications = {{.method = "OAuth2"_L1}},
-                         .username = "%EMAILADDRESS%"_L1,
-                     }}},
-                    {"carddav"_L1,
-                     QList{Server{
-                         .type = "carddav"_L1,
-                         .url = QUrl("https://contacts.example.com/remote.php/dav"_L1),
-                         .authentications =
-                             {
-                                 {.system = "http"_L1, .method = "Basic"_L1},
-                             },
-                         .username = "%EMAILADDRESS%"_L1,
-                     }}},
-                    {"caldav"_L1,
-                     QList{Server{
-                         .type = "caldav"_L1,
-                         .url = QUrl("https://calendar.example.com/remote.php/dav"_L1),
-                         .authentications =
-                             {
-                                 {.system = "http"_L1, .method = "Basic"_L1},
-                             },
-                         .username = "%EMAILADDRESS%"_L1,
-                     }}},
-                    {QString{"webdav"_L1},
-                     QList{Server{
-                         .type = "webdav"_L1,
-                         .url = QUrl("https://share.example.com/remote.php/dav"_L1),
-                         .authentications =
-                             {
-                                 {.system = "http"_L1, .method = "Basic"_L1},
-                             },
-                         .username = "%EMAILADDRESS%"_L1,
-                     }}},
-                    {"xmpp"_L1,
-                     QList{
-                         Server{
-                             .type = "xmpp"_L1,
-                             .url = QUrl("wss://example.com:5281/xmpp-websocket"_L1),
-                             .authentications =
-                                 {
-                                     {.system = "http"_L1, .method = "Basic"_L1},
-                                 },
-                             .username = "%EMAILADDRESS%"_L1,
-                         },
-                         Server{
-                             .type = "xmpp"_L1,
-                             .authentications = {{.method = "password-cleartext"_L1}},
-                             .username = "%EMAILADDRESS%"_L1,
-                             .hostname = "xmpp.example.com"_L1,
-                             .port = 5223,
-                             .socketType = "TLS"_L1,
-                         }
-                     }},
-                    {"opentalk"_L1,
-                     QList{Server{
-                         .type = "opentalk"_L1,
-                         .url = QUrl("https://talk.example.com/login"_L1),
-                         .authentications =
-                             {
-                                 {.method = "OAuth2"_L1},
-                             },
-                         .username = "%EMAILADDRESS%"_L1,
-                     }}},
+                    .type = "imap"_L1,
+                    .authentications = {{.method = "password-cleartext"_L1}},
+                    .username = "%EMAILADDRESS%"_L1,
+                    .hostname = "imap.example.com"_L1,
+                    .port = 993,
+                    .socketType = "SSL"_L1,
                 },
+                {
+                    .type = "pop3"_L1,
+                    .authentications = {{.method = "password-cleartext"_L1}},
+                    .username = "%EMAILADDRESS%"_L1,
+                    .hostname = "pop.example.com"_L1,
+                    .port = 995,
+                    .socketType = "SSL"_L1,
+                },
+                {
+                    .type = "smtp"_L1,
+                    .authentications = {{.method = "password-cleartext"_L1}},
+                    .username = "%EMAILADDRESS%"_L1,
+                    .hostname = "smtp.googlemail.com"_L1,
+                    .port = 587,
+                    .socketType = "STARTTLS"_L1,
+                },
+                {
+                    .type = "jmap"_L1,
+                    .url = QUrl("https://jmap.example.com"_L1),
+                    .authentications = {{.method = "OAuth2"_L1}},
+                    .username = "%EMAILADDRESS%"_L1,
+                },
+                {
+                    .type = "ews"_L1,
+                    .url = QUrl("https://mail.example.com/EWS/Exchange.asmx"_L1),
+                    .authentications = {{.system = "http"_L1, .method = "Basic"_L1}},
+                    .username = "%EMAILADDRESS%"_L1,
+                },
+                {
+                    .type = "activesync"_L1,
+                    .url = QUrl("https://mail.example.com/Microsoft-Server-ActiveSync"_L1),
+                    .authentications = {{.method = "OAuth2"_L1}},
+                    .username = "%EMAILADDRESS%"_L1,
+                },
+                {
+                    .type = "carddav"_L1,
+                    .url = QUrl("https://contacts.example.com/remote.php/dav"_L1),
+                    .authentications = {{.system = "http"_L1, .method = "Basic"_L1}},
+                    .username = "%EMAILADDRESS%"_L1,
+                },
+                {
+                    .type = "caldav"_L1,
+                    .url = QUrl("https://calendar.example.com/remote.php/dav"_L1),
+                    .authentications = {{.system = "http"_L1, .method = "Basic"_L1}},
+                    .username = "%EMAILADDRESS%"_L1,
+                },
+                {
+                    .type = "webdav"_L1,
+                    .url = QUrl("https://share.example.com/remote.php/dav"_L1),
+                    .authentications = {{.system = "http"_L1, .method = "Basic"_L1}},
+                    .username = "%EMAILADDRESS%"_L1,
+                },
+                {
+                    .type = "xmpp"_L1,
+                    .url = QUrl("wss://example.com:5281/xmpp-websocket"_L1),
+                    .authentications = {{.system = "http"_L1, .method = "Basic"_L1}},
+                    .username = "%EMAILADDRESS%"_L1,
+                },
+                {
+                    .type = "xmpp"_L1,
+                    .authentications = {{.method = "password-cleartext"_L1}},
+                    .username = "%EMAILADDRESS%"_L1,
+                    .hostname = "xmpp.example.com"_L1,
+                    .port = 5223,
+                    .socketType = "TLS"_L1,
+                },
+                {
+                    .type = "opentalk"_L1,
+                    .url = QUrl("https://talk.example.com/login"_L1),
+                    .authentications = {{.method = "OAuth2"_L1}},
+                     .username = "%EMAILADDRESS%"_L1,
+                }
+            },
             .oAuth2 =
                 {
                     .authURL = QUrl(QLatin1StringView("https://login.example.com/auth")),
@@ -180,54 +147,49 @@ private Q_SLOTS:
                         .displayName = "Google Mail"_L1,
                         .displayShortName = "GMail"_L1,
                     },
-                .serversByProtocol = {
-                    {"imap"_L1,
-                     QList{Server{
-                         .type = "imap"_L1,
-                         .authentications = {{.method = "OAuth2"_L1}, {.method = "password-cleartext"_L1}},
-                         .username = "%EMAILADDRESS%"_L1,
-                         .hostname = "imap.gmail.com"_L1,
-                         .port = 993,
-                         .socketType = "SSL"_L1,
-                     }}},
-                    {"pop3"_L1,
-                     QList{Server{
-                         .type = "pop3"_L1,
-                         .authentications = {{.method = "OAuth2"_L1}, {.method = "password-cleartext"_L1}},
-                         .username = "%EMAILADDRESS%"_L1,
-                         .hostname = "pop.gmail.com"_L1,
-                         .port = 995,
-                         .socketType = "SSL"_L1,
-                     }}},
-                    {"smtp"_L1,
-                     QList{Server{
-                         .type = "smtp"_L1,
-                         .authentications = {{.method = "OAuth2"_L1}, {.method = "password-cleartext"_L1}},
-                         .username = "%EMAILADDRESS%"_L1,
-                         .hostname = "smtp.gmail.com"_L1,
-                         .port = 465,
-                         .socketType = "SSL"_L1,
-                     }}},
+                .servers = {
+                    {
+                        .type = "imap"_L1,
+                        .authentications = {{.method = "OAuth2"_L1}, {.method = "password-cleartext"_L1}},
+                        .username = "%EMAILADDRESS%"_L1,
+                        .hostname = "imap.gmail.com"_L1,
+                        .port = 993,
+                        .socketType = "SSL"_L1,
+                    },
+                    {
+                        .type = "pop3"_L1,
+                        .authentications = {{.method = "OAuth2"_L1}, {.method = "password-cleartext"_L1}},
+                        .username = "%EMAILADDRESS%"_L1,
+                        .hostname = "pop.gmail.com"_L1,
+                        .port = 995,
+                        .socketType = "SSL"_L1,
+                    },
+                    {
+                        .type = "smtp"_L1,
+                        .authentications = {{.method = "OAuth2"_L1}, {.method = "password-cleartext"_L1}},
+                        .username = "%EMAILADDRESS%"_L1,
+                        .hostname = "smtp.gmail.com"_L1,
+                        .port = 465,
+                        .socketType = "SSL"_L1,
+                    },
                 }
             };
 
         QTest::newRow("special_urls.xml")<< QStringLiteral("special_urls.xml") << ClientConfig{
             .version="1.2"_L1,
-            .serversByProtocol = {
-                {"carddav"_L1,
-                    QList{Server{
-                        .type = "carddav"_L1,
-                        .url = QUrl("https://contacts.example.com/remote.php/Distributed Authoring and Versioning!"_L1),
-                        .authentications = {{.method = "basic"_L1}},
-                        .username = "%EMAILADDRESS%"_L1
-                }}},
-                {"caldav"_L1,
-                    QList{Server{
-                        .type = "caldav"_L1,
-                        .url = QUrl("https://calendar.example.com/remote.php/Distributed%20Authoring%20and%20Versioning%21"_L1),
-                        .authentications = {{.method = "basic"_L1}},
-                        .username = "%EMAILADDRESS%"_L1
-                }}},
+            .servers = {
+                {
+                    .type = "carddav"_L1,
+                    .url = QUrl("https://contacts.example.com/remote.php/Distributed Authoring and Versioning!"_L1),
+                    .authentications = {{.method = "basic"_L1}},
+                    .username = "%EMAILADDRESS%"_L1
+                },
+                {
+                    .type = "caldav"_L1,
+                    .url = QUrl("https://calendar.example.com/remote.php/Distributed%20Authoring%20and%20Versioning%21"_L1),
+                    .authentications = {{.method = "basic"_L1}},
+                    .username = "%EMAILADDRESS%"_L1
+                },
             }
         };
 

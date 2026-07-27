@@ -58,12 +58,7 @@ bool isServerValid(const Server &server)
 bool isClientConfigValid(const ClientConfig &clientConfig)
 {
     // Don't check emailProvider validity, since all servers are in the clientConfig map
-    for (const auto &servers : clientConfig.serversByProtocol.values()) {
-        if (!std::ranges::all_of(servers, isServerValid)) {
-            return false;
-        };
-    }
-    return true;
+    return std::ranges::all_of(clientConfig.servers, isServerValid);
 }
 
 Documentation parseDocumentation(QXmlStreamReader &xml)
@@ -191,7 +186,7 @@ Domain parseDomain(QXmlStreamReader &xml)
     return domain;
 }
 
-std::optional<EmailProvider> parseEmailProvider(QXmlStreamReader &xml, QHash<QString, QList<Server>> &serversByProtocol)
+std::optional<EmailProvider> parseEmailProvider(QXmlStreamReader &xml, QList<Server> &servers)
 {
     auto emailProvider = EmailProvider();
     if (xml.attributes().hasAttribute(QLatin1StringView("id"))) {
@@ -220,7 +215,7 @@ std::optional<EmailProvider> parseEmailProvider(QXmlStreamReader &xml, QHash<QSt
             if (!res) {
                 return {};
             }
-            serversByProtocol[protocol].append(*res);
+            servers.append(*res);
         } else {
             xml.skipCurrentElement();
         }
@@ -245,7 +240,7 @@ std::optional<ClientConfig> parseClientConfig(QXmlStreamReader &xml)
     }
     while (xml.readNextStartElement()) {
         if (xml.name() == QLatin1StringView("emailProvider")) {
-            const auto res = parseEmailProvider(xml, clientConfig.serversByProtocol);
+            const auto res = parseEmailProvider(xml, clientConfig.servers);
             if (!res) {
                 return {};
             }
@@ -257,7 +252,7 @@ std::optional<ClientConfig> parseClientConfig(QXmlStreamReader &xml)
                 if (!res) {
                     return {};
                 }
-                clientConfig.serversByProtocol[protocol].append(*res);
+                clientConfig.servers.append(*res);
             } else {
                 xml.skipCurrentElement();
             }

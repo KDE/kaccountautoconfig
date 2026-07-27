@@ -15,7 +15,6 @@ class ClientConfigStructTest : public QObject
     Q_OBJECT
 
 private Q_SLOTS:
-
     // clang adds big indentations that make the code less readable when using this struct syntax
     // clang-format off
 
@@ -346,25 +345,23 @@ private Q_SLOTS:
                     .displayName = "Google Mail"_L1,
                     .displayShortName = "GMail"_L1,
                 },
-            .serversByProtocol = {
-                {"imap"_L1,
-                 {{
+            .servers = {
+                 {
                      .type = "imap"_L1,
                      .authentications = {{.method = "OAuth2"_L1}, {.method = "password-cleartext"_L1}},
                      .username = "%EMAILADDRESS%"_L1,
                      .hostname = "imap.gmail.com"_L1,
                      .port = 993,
                      .socketType = "SSL"_L1,
-                 }}},
-                {"smtp"_L1,
-                 {{
+                 },
+                 {
                      .type = "smtp"_L1,
                      .authentications = {{.method = "OAuth2"_L1}, {.method = "password-cleartext"_L1}},
                      .username = "%EMAILADDRESS%"_L1,
                      .hostname = "smtp.gmail.com"_L1,
                      .port = 465,
                      .socketType = "SSL"_L1,
-                 }}},
+                 },
             }
         };
 
@@ -383,26 +380,24 @@ private Q_SLOTS:
                         .displayName = "Google Mail"_L1,
                         .displayShortName = "GMail"_L1,
                     },
-                .serversByProtocol =
+                .servers =
                     {
-                        {"imap"_L1,
-                         {{
+                         {
                              .type = "imap"_L1,
                              .authentications = {{.method = "OAuth2"_L1}, {.method = "password-cleartext"_L1}},
                              .username = "%EMAILADDRESS%"_L1,
                              .hostname = "imap.gmail.com"_L1,
                              .port = 993,
                              .socketType = "SSL"_L1,
-                         }}},
-                        {"smtp"_L1,
-                         {{
+                         },
+                         {
                              .type = "smtp"_L1,
                              .authentications = {{.method = "OAuth2"_L1}, {.method = "password-cleartext"_L1}},
                              .username = "%EMAILADDRESS%"_L1,
                              .hostname = "smtp.gmail.com"_L1,
                              .port = 465,
                              .socketType = "SSL"_L1,
-                         }}},
+                         },
                     }
             }),
             controlClientConfig
@@ -424,32 +419,30 @@ private Q_SLOTS:
                         .displayName = "Google Mail"_L1,
                         .displayShortName = "GMail"_L1,
                     },
-                .serversByProtocol =
+                .servers =
                     {
-                        {"imap"_L1,
-                         {{
+                         {
                              .type = "imap"_L1,
                              .authentications = {{.method = "OAuth2"_L1}, {.method = "password-cleartext"_L1}},
                              .username = "%EMAILADDRESS%"_L1,
                              .hostname = "imap.gmail.com"_L1,
                              .port = 993,
                              .socketType = "SSL"_L1,
-                         }}},
-                        {"smtp"_L1,
-                         {{
+                         },
+                         {
                              .type = "smtp"_L1,
                              .authentications = {{.method = "OAuth2"_L1}, {.method = "password-cleartext"_L1}},
                              .username = "%EMAILADDRESS%"_L1,
                              .hostname = "smtp.gmail.com"_L1,
                              .port = 465,
                              .socketType = "SSL"_L1,
-                         }}},
+                         },
                     }
             }),
             controlClientConfig
         );
 
-        // ServersByProtocol different key
+        // servers different value
         QCOMPARE_NE(
             (ClientConfig{
                 .emailProvider =
@@ -465,73 +458,30 @@ private Q_SLOTS:
                         .displayName = "Google Mail"_L1,
                         .displayShortName = "GMail"_L1,
                     },
-                .serversByProtocol =
+                .servers =
                     {
-                        {"pop3"_L1,
-                         {{
-                             .type = "imap"_L1,
-                             .authentications = {{.method = "OAuth2"_L1}, {.method = "password-cleartext"_L1}},
-                             .username = "%EMAILADDRESS%"_L1,
-                             .hostname = "imap.gmail.com"_L1,
-                             .port = 993,
-                             .socketType = "SSL"_L1,
-                         }}},
-                        {"smtp"_L1,
-                         {{
-                             .type = "smtp"_L1,
-                             .authentications = {{.method = "OAuth2"_L1}, {.method = "password-cleartext"_L1}},
-                             .username = "%EMAILADDRESS%"_L1,
-                             .hostname = "smtp.gmail.com"_L1,
-                             .port = 465,
-                             .socketType = "SSL"_L1,
-                         }}},
-                    }
-            }),
-            controlClientConfig
-        );
-
-        // ServersByProtocol different value
-        QCOMPARE_NE(
-            (ClientConfig{
-                .emailProvider =
-                    {
-                        .id = "googlemail.com"_L1,
-                        .domains =
-                            {
-                                {.path = "gmail.com"_L1},
-                                {.path = "googlemail.com"_L1},
-                                {.path = "google.com"_L1},
-                                {.path = "jazztel.es"_L1},
-                            },
-                        .displayName = "Google Mail"_L1,
-                        .displayShortName = "GMail"_L1,
-                    },
-                .serversByProtocol =
-                    {
-                        {"imap"_L1,
-                         {{
+                         {
                              .type = "pop3"_L1,
                              .authentications = {{.method = "OAuth2"_L1}, {.method = "password-cleartext"_L1}},
                              .username = "%EMAILADDRESS%"_L1,
                              .hostname = "imap.gmail.com"_L1,
                              .port = 993,
                              .socketType = "SSL"_L1,
-                         }}},
-                        {"smtp"_L1,
-                         {{
+                         },
+                         {
                              .type = "smtp"_L1,
                              .authentications = {{.method = "OAuth2"_L1}, {.method = "password-cleartext"_L1}},
                              .username = "%EMAILADDRESS%"_L1,
                              .hostname = "smtp.gmail.com"_L1,
                              .port = 465,
                              .socketType = "SSL"_L1,
-                         }}},
+                         },
                     }
             }),
             controlClientConfig
         );
 
-        // ServersByProtocol bigger map
+        // servers bigger map
         QCOMPARE_NE(
             (ClientConfig{
                 .emailProvider =
@@ -547,27 +497,25 @@ private Q_SLOTS:
                         .displayName = "Google Mail"_L1,
                         .displayShortName = "GMail"_L1,
                     },
-                .serversByProtocol =
+                .servers =
                     {
-                        {"pop3"_L1, {{}}},
-                        {"imap"_L1,
-                         {{
+                        {},
+                         {
                              .type = "imap"_L1,
                              .authentications = {{.method = "OAuth2"_L1}, {.method = "password-cleartext"_L1}},
                              .username = "%EMAILADDRESS%"_L1,
                              .hostname = "imap.gmail.com"_L1,
                              .port = 993,
                              .socketType = "SSL"_L1,
-                         }}},
-                        {"smtp"_L1,
-                         {{
+                         },
+                         {
                              .type = "smtp"_L1,
                              .authentications = {{.method = "OAuth2"_L1}, {.method = "password-cleartext"_L1}},
                              .username = "%EMAILADDRESS%"_L1,
                              .hostname = "smtp.gmail.com"_L1,
                              .port = 465,
                              .socketType = "SSL"_L1,
-                         }}},
+                         },
                     }
             }),
             controlClientConfig
