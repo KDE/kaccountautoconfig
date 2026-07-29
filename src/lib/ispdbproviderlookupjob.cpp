@@ -37,7 +37,7 @@ void IspdbProviderLookupJob::lookup()
             qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Configuration invalid for url" << url;
             reply->deleteLater();
             setErrorText(QStringLiteral("ISPDB provider lookup configuration is invalid"));
-            setError(ConfigurationParsingError);
+            setError(InvalidConfiguration);
             emitResult();
             return;
         }
@@ -51,7 +51,7 @@ void IspdbProviderLookupJob::lookup()
     connect(reply, &QNetworkReply::errorOccurred, this, [reply, url, this] {
         qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Configuration not found for url" << url << "with error" << reply->errorString();
         reply->deleteLater();
-        setError(ConfigurationNotFound);
+        setError(InvalidConfiguration);
         setErrorText(QStringLiteral("ISPDB provider lookup couldn't find configuration"));
         emitResult();
     });

@@ -33,7 +33,7 @@ void LookupEmailProviderJob::tryNextEmailProvider()
 
     if (m_currentEmailProvider >= emailProvidersUrls.size()) {
         // this job always returns ConfigurationNoFound as it tries next email provider if a parsing error during the lookup
-        setError(ConfigurationNotFound);
+        setError(InvalidConfiguration);
         setErrorText(QStringLiteral("Email provider lookup couldn't resolve any configuration"));
         emitResult();
         return;

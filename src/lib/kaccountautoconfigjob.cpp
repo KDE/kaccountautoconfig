@@ -78,7 +78,7 @@ LookupProviderJobBase *KAccountAutoconfigJobPrivate::createProviderJob(int index
 void KAccountAutoconfigJobPrivate::tryNextProvider()
 {
     if (m_currentProviderIndex >= ProviderCount) {
-        q->setError(LookupProviderJobBase::ConfigurationNotFound);
+        q->setError(LookupProviderJobBase::InvalidConfiguration);
         q->emitResult();
         return;
     }

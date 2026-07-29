@@ -24,16 +24,14 @@ void LocalFileProviderLookupJob::lookup()
 {
     // configuration file should be in a isp directory according to the rfc
     const auto subPath = QStringLiteral("/isp/") + m_emailDomain + QStringLiteral(".xml");
-    int lastError = NoError;
 
     for (const auto &dir : QStandardPaths::standardLocations(QStandardPaths::ConfigLocation)) {
-        lastError = lookupFile(dir + subPath);
-        if (lastError == NoError) {
+        if (lookupFile(dir + subPath) == NoError) {
             emitResult();
             return;
         }
     }
-    setError(lastError);
+    setError(InvalidConfiguration);
     emitResult();
 }
 
@@ -43,12 +41,12 @@ int LocalFileProviderLookupJob::lookupFile(const QString &path)
     QFile file(path);
 
     if (!file.open(QIODevice::ReadOnly)) {
-        return ConfigurationNotFound;
+        return InvalidConfiguration;
     }
     const auto data = parse(&file);
     if (!data) {
         qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Configuration invalid for path" << path;
-        return ConfigurationParsingError;
+        return InvalidConfiguration;
     }
     m_configurationData = data.value();
     m_configurationSource = path;

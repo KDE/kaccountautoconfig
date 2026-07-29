@@ -66,7 +66,7 @@ private Q_SLOTS:
         QCOMPARE(job->configuration().has_value(), false);
         QCOMPARE(job->source().isEmpty(), true);
         // invalid so search another path. At the end Configuration not found
-        QCOMPARE(job->error(), LookupProviderJobBase::ConfigurationNotFound);
+        QCOMPARE(job->error(), LookupProviderJobBase::InvalidConfiguration);
     }
 };
 

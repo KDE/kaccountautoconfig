@@ -26,13 +26,9 @@ class LookupProviderJobBase : public KJob
 public:
     enum Error {
         /*!
-         * The job could not find the configuration
+         * The job could not find the configuration or parse the configuration
          */
-        ConfigurationNotFound = UserDefinedError,
-        /*!
-         * The job could find a configuration but is not valid
-         */
-        ConfigurationParsingError
+        InvalidConfiguration = UserDefinedError,
     };
 
     explicit LookupProviderJobBase(const QString &email, QNetworkAccessManager *networkAccessManager);

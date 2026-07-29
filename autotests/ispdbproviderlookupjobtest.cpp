@@ -66,7 +66,7 @@ private Q_SLOTS:
         spyJob.wait();
         QCOMPARE(job->configuration().has_value(), false);
         QCOMPARE(job->source().isEmpty(), true);
-        QCOMPARE(job->error(), LookupProviderJobBase::ConfigurationNotFound);
+        QCOMPARE(job->error(), LookupProviderJobBase::InvalidConfiguration);
     }
 
     /*!
@@ -83,7 +83,7 @@ private Q_SLOTS:
         spyJob.wait();
         QCOMPARE(job->configuration().has_value(), false);
         QCOMPARE(job->source().isEmpty(), true);
-        QCOMPARE(job->error(), LookupProviderJobBase::ConfigurationParsingError);
+        QCOMPARE(job->error(), LookupProviderJobBase::InvalidConfiguration);
     }
 
     /*!
@@ -100,7 +100,7 @@ private Q_SLOTS:
         spyJob.wait();
         QCOMPARE(job->configuration().has_value(), false);
         QCOMPARE(job->source().isEmpty(), true);
-        QCOMPARE(job->error(), LookupProviderJobBase::ConfigurationNotFound);
+        QCOMPARE(job->error(), LookupProviderJobBase::InvalidConfiguration);
     }
 };
 

@@ -22,6 +22,13 @@ class KACCOUNTAUTOCONFIG_EXPORT KAccountAutoconfigJob : public KCompositeJob
     friend class KAccountAutoconfigJobPrivate;
 
 public:
+    enum Error {
+        /*!
+         * \brief No valid configuration was found from any providers.
+         */
+        ConfigurationNotFound = UserDefinedError,
+    };
+
     explicit KAccountAutoconfigJob(QObject *parent = nullptr);
     explicit KAccountAutoconfigJob(QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
 

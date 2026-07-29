@@ -53,7 +53,7 @@ LookupProviderJobBase *LookupOrchestratorJob::createProviderJob(int index)
 void LookupOrchestratorJob::tryNextProvider()
 {
     if (m_currentProviderIndex >= ProviderCount) {
-        setError(LookupProviderJobBase::ConfigurationNotFound);
+        setError(LookupProviderJobBase::InvalidConfiguration);
         emitResult();
         return;
     }

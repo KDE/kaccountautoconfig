@@ -245,6 +245,23 @@ private Q_SLOTS:
             return server.isValid();
         }));
     }
+
+    void testAllProvidersFail()
+    {
+        StubNetworkAccessManager stub;
+        stub.addResponses({{validWellKnownUrl, validConfiguration, 404}, {validIspdbUrl, validConfiguration, 404}});
+        removeLocalConfigurationFile();
+
+        const auto job = new KAccountAutoconfigJob(&stub, this);
+        job->setEmail(validEmail);
+        QSignalSpy spyJob(job, &KAccountAutoconfigJob::result);
+
+        job->start();
+        spyJob.wait();
+
+        QCOMPARE(job->error(), KAccountAutoconfigJob::Error::ConfigurationNotFound);
+        QCOMPARE(job->servers().size(), 0);
+    }
 };
 
 QTEST_MAIN(KAccountAutoconfigTest)

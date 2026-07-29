@@ -77,7 +77,7 @@ private Q_SLOTS:
 
         const auto lookupJob = job->providerJob();
 
-        QCOMPARE(job->error(), LookupProviderJobBase::ConfigurationNotFound);
+        QCOMPARE(job->error(), LookupProviderJobBase::InvalidConfiguration);
         QCOMPARE(lookupJob, nullptr);
     }
 };
