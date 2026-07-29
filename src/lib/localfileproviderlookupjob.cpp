@@ -27,7 +27,6 @@ void LocalFileProviderLookupJob::lookup()
     int lastError = NoError;
 
     for (const auto &dir : QStandardPaths::standardLocations(QStandardPaths::ConfigLocation)) {
-        qCInfo(KACCOUNTAUTOCONFIG_LOG) << "Looking for configuration files in:" << dir;
         lastError = lookupFile(dir + subPath);
         if (lastError == NoError) {
             emitResult();
@@ -40,13 +39,12 @@ void LocalFileProviderLookupJob::lookup()
 
 int LocalFileProviderLookupJob::lookupFile(const QString &path)
 {
-    qCInfo(KACCOUNTAUTOCONFIG_LOG) << "Looking Configuration into local file with path" << path;
+    qCDebug(KACCOUNTAUTOCONFIG_LOG) << "Looking Configuration into local file with path" << path;
     QFile file(path);
 
     if (!file.open(QIODevice::ReadOnly)) {
         return ConfigurationNotFound;
     }
-    qCInfo(KACCOUNTAUTOCONFIG_LOG) << "Configuration found for path" << path;
     const auto data = parse(&file);
     if (!data) {
         qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Configuration invalid for path" << path;
@@ -54,6 +52,6 @@ int LocalFileProviderLookupJob::lookupFile(const QString &path)
     }
     m_configurationData = data.value();
     m_configurationSource = path;
-    qCInfo(KACCOUNTAUTOCONFIG_LOG) << "Configuration parsed for path" << path;
+    qCInfo(KACCOUNTAUTOCONFIG_LOG) << "Configuration found for path" << path;
     return NoError;
 }

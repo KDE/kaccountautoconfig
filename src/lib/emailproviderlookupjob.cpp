@@ -41,7 +41,7 @@ void LookupEmailProviderJob::tryNextEmailProvider()
 
     const auto currentEmailProvider = emailProvidersUrls[m_currentEmailProvider++];
     const QUrl urlToCall(substitutePlaceholders(QString(currentEmailProvider)));
-    qCInfo(KACCOUNTAUTOCONFIG_LOG) << "Looking Configuration into MailProvider with url" << urlToCall;
+    qCDebug(KACCOUNTAUTOCONFIG_LOG) << "Looking Configuration into MailProvider with url" << urlToCall;
     handleServerRequest(urlToCall);
 }
 

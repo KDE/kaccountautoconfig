@@ -22,7 +22,7 @@ IspdbProviderLookupJob::~IspdbProviderLookupJob() = default;
 void IspdbProviderLookupJob::lookup()
 {
     QUrl url(substitutePlaceholders(QString(ispdbProviderUrl)));
-    qCInfo(KACCOUNTAUTOCONFIG_LOG) << "Looking Configuration into ispdb with url" << url;
+    qCDebug(KACCOUNTAUTOCONFIG_LOG) << "Looking Configuration into ispdb with url" << url;
 
     const QNetworkRequest request(url);
     auto reply = m_networkAccessManager->get(request);
