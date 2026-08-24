@@ -1,8 +1,9 @@
 # SPDX-FileCopyrightText: none
 # SPDX-License-Identifier: BSD-3-Clause
-add_library(KAccountAutoconfig)
+add_library(KF6AccountAutoconfig)
+add_library(KF6::AccountAutoconfig ALIAS KF6AccountAutoconfig)
 
-generate_export_header(KAccountAutoconfig)
+generate_export_header(KF6AccountAutoconfig BASE_NAME kaccountautoconfig)
 
 set(KAccountAutoconfig_LIB_SRCS
     lib/lookupproviderjobbase.cpp
@@ -27,66 +28,77 @@ set(KAccountAutoconfig_LIB_SRCS
 )
 
 target_sources(
-    KAccountAutoconfig
+    KF6AccountAutoconfig
     PRIVATE
         ${KAccountAutoconfig_LIB_SRCS}
     PUBLIC
         FILE_SET HEADERS
+            BASE_DIRS
+                lib
             FILES
                 lib/kaccountautoconfigjob.h
                 lib/kautoconfigserver.h
 )
 
 target_link_libraries(
-    KAccountAutoconfig
+    KF6AccountAutoconfig
     PUBLIC
         KF6::CoreAddons # for KJob
         Qt6::Network
+    PRIVATE
         PkgConfig::Libpsl # to extract TLD
 )
 
 set_target_properties(
-    KAccountAutoconfig
+    KF6AccountAutoconfig
     PROPERTIES
         VERSION
             ${KACCOUNTAUTOCONFIG_VERSION}
         SOVERSION
             ${KACCOUNTAUTOCONFIG_SOVERSION}
         EXPORT_NAME
-            KACCOUNTAUTOCONFIG
+            AccountAutoconfig
 )
 
 ecm_generate_headers(KACCOUNTAUTOCONFIG_CamelCase_HEADERS
     HEADER_NAMES
     KAccountAutoconfigJob
     KAutoconfigServer
-    PREFIX KACCOUNTAUTOCONFIG
+    PREFIX KAccountAutoconfig
     RELATIVE lib
     REQUIRED_HEADERS KACCOUNTAUTOCONFIG_HEADERS
 )
 
-ecm_generate_export_header(KAccountAutoconfig
+ecm_generate_export_header(KF6AccountAutoconfig
     BASE_NAME kaccountautoconfig
     VERSION ${KACCOUNTAUTOCONFIG_VERSION}
     DEPRECATED_BASE_VERSION 0
     USE_VERSION_HEADER
 )
 
-ecm_qt_declare_logging_category(KAccountAutoconfig HEADER kaccountautoconfig_debug.h IDENTIFIER KACCOUNTAUTOCONFIG_LOG CATEGORY_NAME org.kde.pim.kaccountautoconfig)
+ecm_qt_declare_logging_category(KF6AccountAutoconfig HEADER kaccountautoconfig_debug.h IDENTIFIER KACCOUNTAUTOCONFIG_LOG CATEGORY_NAME org.kde.pim.kaccountautoconfig)
 
 install(
-    FILES
-        lib/kaccountautoconfigjob.h
-        lib/kautoconfigserver.h
-    DESTINATION "${KDE_INSTALL_INCLUDEDIR}/KAccountAutoconfig/"
+    TARGETS
+        KF6AccountAutoconfig
+    EXPORT KF6AccountAutoconfigTargets
+    FILE_SET HEADERS
+        DESTINATION "${KDE_INSTALL_INCLUDEDIR}/KF6/KAccountAutoconfig/kaccountautoconfig/"
+    ${KDE_INSTALL_TARGETS_DEFAULT_ARGS}
     COMPONENT Devel
 )
 
 install(
     FILES
         ${KACCOUNTAUTOCONFIG_CamelCase_HEADERS}
-    DESTINATION ${KDE_INSTALL_INCLUDEDIR}/KAccountAutoconfig
+    DESTINATION "${KDE_INSTALL_INCLUDEDIR}/KF6/KAccountAutoconfig/"
     COMPONENT Devel
+)
+
+target_include_directories(
+    KF6AccountAutoconfig
+    INTERFACE
+        "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR}/KF6/KAccountAutoconfig>"
 )
 
 if(BUILD_TESTING)

@@ -13,4 +13,4 @@ find_dependency(
     "@KF_MIN_VERSION@"
 )
 
-include("${CMAKE_CURRENT_LIST_DIR}/KAccountAutoconfig.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/KF6AccountAutoconfigTargets.cmake")

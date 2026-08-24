@@ -54,14 +54,15 @@ set(EXCLUDE_DEPRECATED_BEFORE_AND_AT
 ecm_setup_version(PROJECT
     VARIABLE_PREFIX KACCOUNTAUTOCONFIG
     VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/src/kaccountautoconfig_version.h"
-    PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KAccountAutoconfigConfigVersion.cmake"
+    PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF6AccountAutoconfigConfigVersion.cmake"
     SOVERSION 6
 )
 
 install(
     FILES
         "${CMAKE_CURRENT_BINARY_DIR}/src/kaccountautoconfig_version.h"
-    DESTINATION "${KDE_INSTALL_INCLUDEDIR}/KAccountAutoconfig/"
+        "${CMAKE_CURRENT_BINARY_DIR}/src/kaccountautoconfig_export.h"
+    DESTINATION "${KDE_INSTALL_INCLUDEDIR}/KF6/KAccountAutoconfig/kaccountautoconfig/"
     COMPONENT Devel
 )
 
@@ -76,20 +77,27 @@ include(ECMFeatureSummary)
 
 kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
 
-set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KAccountAutoconfig")
+set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KF6AccountAutoconfig")
 
 install(
     FILES
-        "${CMAKE_CURRENT_BINARY_DIR}/KAccountAutoconfigConfig.cmake"
-        "${CMAKE_CURRENT_BINARY_DIR}/KAccountAutoconfigConfigVersion.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/KF6AccountAutoconfigConfig.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/KF6AccountAutoconfigConfigVersion.cmake"
     DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
     COMPONENT Devel
 )
 
 configure_package_config_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/KAccountAutoconfigConfig.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/KAccountAutoconfigConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/KF6AccountAutoconfigConfig.cmake"
     INSTALL_DESTINATION ${CMAKECONFIG_INSTALL_DIR}
 )
 
 ecm_feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
+
+install(
+    EXPORT KF6AccountAutoconfigTargets
+    NAMESPACE KF6::
+    DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
+    FILE KF6AccountAutoconfigTargets.cmake
+)
