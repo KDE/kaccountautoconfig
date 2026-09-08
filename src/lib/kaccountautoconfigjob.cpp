@@ -27,6 +27,8 @@ class KAccountAutoconfigJobPrivate
 public:
     explicit KAccountAutoconfigJobPrivate(KAccountAutoconfigJob *job, QNetworkAccessManager *networkAccessManager);
 
+    KAccountAutoconfigJob *q;
+
     QString m_email;
     QList<KAutoconfigServer> m_servers;
     LookupProviderJobBase *m_providerJob;
@@ -36,8 +38,6 @@ public:
     LookupProviderJobBase *createProviderJob(int index);
     void tryNextProvider();
     void parseServers();
-
-    KAccountAutoconfigJob *q;
 };
 
 KAccountAutoconfigJobPrivate::KAccountAutoconfigJobPrivate(KAccountAutoconfigJob *job, QNetworkAccessManager *networkAccessManager)
