@@ -11,14 +11,14 @@ set(KAccountAutoconfig_LIB_SRCS
     lib/emailproviderlookupjob.cpp
     lib/ispdbproviderlookupjob.cpp
     lib/autoconfigparser.cpp
-    lib/lookupproviderjobbase_p.h
-    lib/ispdbproviderlookupjob_p.h
     lib/lookuporchestratorjob.cpp
     lib/autoconfigserverhelper.cpp
     lib/emailproviderlookupjob_p.h
     lib/autoconfigparser_p.h
-    lib/ispdbproviderlookupjob_p.h
     lib/autoconfigserverhelper_p.h
+    lib/lookupproviderjobbase_p.h
+    lib/ispdbproviderlookupjob_p.h
+    lib/lookuporchestratorjob_p.h
 )
 
 target_sources(
