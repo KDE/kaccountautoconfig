@@ -38,10 +38,18 @@ public:
          * Default value
          */
         UnknownAuthentication,
+        // URL-based protocols
         Basic,
         Digest,
+        // Common
+        OAuth2,
+        // TCP-based protocols
         PasswordCleartext,
         PasswordEncrypted,
+        NTLM,
+        GSSAPI,
+        TlsClientCert,
+        ClientIpAddress
     };
 
     enum SocketType {

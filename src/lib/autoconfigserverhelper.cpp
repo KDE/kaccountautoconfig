@@ -15,6 +15,12 @@ KAutoconfigServer::AuthenticationType authenticationFromString(const QString &au
         {QStringLiteral("password-encrypted"), KAutoconfigServer::AuthenticationType::PasswordEncrypted},
         {QStringLiteral("basic"), KAutoconfigServer::AuthenticationType::Basic},
         {QStringLiteral("digest"), KAutoconfigServer::AuthenticationType::Digest},
+        {QStringLiteral("oauth2"), KAutoconfigServer::AuthenticationType::OAuth2},
+        {QStringLiteral("oauth"), KAutoconfigServer::AuthenticationType::OAuth2},
+        {QStringLiteral("ntlm"), KAutoconfigServer::AuthenticationType::NTLM},
+        {QStringLiteral("gssapi"), KAutoconfigServer::AuthenticationType::GSSAPI},
+        {QStringLiteral("tls-client-cert"), KAutoconfigServer::AuthenticationType::TlsClientCert},
+        {QStringLiteral("client-ip-address"), KAutoconfigServer::AuthenticationType::ClientIpAddress},
     };
 
     return authenticationMap.value(authenticationStr.toLower(), KAutoconfigServer::AuthenticationType::UnknownAuthentication);
@@ -23,6 +29,7 @@ KAutoconfigServer::AuthenticationType authenticationFromString(const QString &au
 KAutoconfigServer::SocketType socketTypeFromString(const QString &socketTypeStr)
 {
     static const QHash<QString, KAutoconfigServer::SocketType> socketTypeMap{
+        {QStringLiteral("PLAIN"), KAutoconfigServer::SocketType::Plain},
         {QStringLiteral("SSL"), KAutoconfigServer::SocketType::SSL},
         {QStringLiteral("STARTTLS"), KAutoconfigServer::SocketType::STARTTLS},
     };
