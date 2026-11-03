@@ -34,6 +34,7 @@ include(ECMGenerateExportHeader)
 include(ECMGeneratePkgConfigFile)
 
 include(ECMSetupVersion)
+include(ECMPoQmTools)
 include(ECMGenerateHeaders)
 include(ECMQtDeclareLoggingCategory)
 include(ECMDeprecationSettings)

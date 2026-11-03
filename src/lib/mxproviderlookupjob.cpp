@@ -35,7 +35,7 @@ void MXProviderLookupJob::handleDummyNameServer()
     if (m_emailDomain != mxFullDomain) {
         qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Requested domain different from the dummy one provided in environment, erroring out";
         setError(KAccountAutoconfigJob::ConfigurationNotFound);
-        setErrorText(QStringLiteral("DNS Lookup failed"));
+        setErrorText(tr("DNS Lookup failed"));
         emitResult();
         return;
     }
@@ -43,7 +43,7 @@ void MXProviderLookupJob::handleDummyNameServer()
     if (mxTopLevelDomain.isEmpty()) {
         qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Dummy DNS lookup returned empty result, erroring out";
         setError(KAccountAutoconfigJob::ConfigurationNotFound);
-        setErrorText(QStringLiteral("No MX record found"));
+        setErrorText(tr("No MX record found"));
         emitResult();
         return;
     }
@@ -71,7 +71,7 @@ void MXProviderLookupJob::handleDnsReply()
     if (m_dnsLookup->error() != QDnsLookup::NoError) {
         qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Dns error" << m_dnsLookup->errorString();
         setError(KAccountAutoconfigJob::ConfigurationNotFound);
-        setErrorText(QStringLiteral("DNS Lookup failed"));
+        setErrorText(tr("DNS Lookup failed"));
         emitResult();
         return;
     }
@@ -79,7 +79,7 @@ void MXProviderLookupJob::handleDnsReply()
     const auto records = m_dnsLookup->mailExchangeRecords();
     if (records.isEmpty()) {
         setError(KAccountAutoconfigJob::ConfigurationNotFound);
-        setErrorText(QStringLiteral("No MX record found"));
+        setErrorText(tr("No MX record found"));
         emitResult();
         return;
     }
@@ -119,7 +119,7 @@ void MXProviderLookupJob::tryNextMXProvider()
 
     if (m_currentProvider >= mxProvidersUrls.size()) {
         setError(KAccountAutoconfigJob::ConfigurationNotFound);
-        setErrorText(QStringLiteral("MX provider lookup couldn't resolve any configuration"));
+        setErrorText(tr("MX provider lookup couldn't resolve any configuration"));
         emitResult();
         return;
     }

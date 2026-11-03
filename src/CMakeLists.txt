@@ -60,6 +60,8 @@ set_target_properties(
             AccountAutoconfig
 )
 
+ecm_create_qm_loader(KF6AccountAutoconfig kaccountautoconfig6_qt)
+
 ecm_generate_headers(KACCOUNTAUTOCONFIG_CamelCase_HEADERS
     HEADER_NAMES
     KAccountAutoconfigJob

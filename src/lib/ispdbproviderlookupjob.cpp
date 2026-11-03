@@ -36,7 +36,7 @@ void IspdbProviderLookupJob::lookup()
         if (!data) {
             qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Configuration invalid for url" << url;
             reply->deleteLater();
-            setErrorText(QStringLiteral("ISPDB provider lookup configuration is invalid"));
+            setErrorText(tr("ISPDB provider lookup configuration is invalid"));
             setError(InvalidConfiguration);
             emitResult();
             return;
@@ -52,7 +52,7 @@ void IspdbProviderLookupJob::lookup()
         qCWarning(KACCOUNTAUTOCONFIG_LOG) << "Configuration not found for url" << url << "with error" << reply->errorString();
         reply->deleteLater();
         setError(InvalidConfiguration);
-        setErrorText(QStringLiteral("ISPDB provider lookup couldn't find configuration"));
+        setErrorText(tr("ISPDB provider lookup couldn't find configuration"));
         emitResult();
     });
 }
