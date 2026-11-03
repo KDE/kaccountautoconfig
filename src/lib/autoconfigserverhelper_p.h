@@ -6,10 +6,11 @@
 
 #pragma once
 #include "autoconfigparser_p.h"
-#include "kautoconfigserver.h"
+#include "kaccountautoconfigserver.h"
 
 namespace AutoconfigServerHelper
 {
-KAutoconfigServer createServerFromParserEntry(const AutoConfigParser::Server &server, KAutoconfigServer::Protocol protocol, const QString &authenticationType);
-std::optional<KAutoconfigServer::Protocol> protocolFromString(const QString &protocolStr);
+KAccountAutoconfigServer
+createServerFromParserEntry(const AutoConfigParser::Server &server, KAccountAutoconfigServer::Protocol protocol, const QString &authenticationType);
+std::optional<KAccountAutoconfigServer::Protocol> protocolFromString(const QString &protocolStr);
 }

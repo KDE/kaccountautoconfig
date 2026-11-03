@@ -12,17 +12,17 @@
 
 #include <kaccountautoconfig_export.h>
 
-class KAutoconfigServerPrivate;
+class KAccountAutoconfigServerPrivate;
 
 /*!
- * \class KAutoconfigServer
+ * \class KAccountAutoconfigServer
  * \inmodule KAutoconfigAccount
  * \brief This class holds information about a server.
  *
  * All information needed to connect to a server is stored in this class, except for the email that is present in the Job.
  * Server should be understood as the RFC https://www.ietf.org/archive/id/draft-bucksch-mailmaint-pacc-00.html#name-servers
  */
-class KACCOUNTAUTOCONFIG_EXPORT KAutoconfigServer
+class KACCOUNTAUTOCONFIG_EXPORT KAccountAutoconfigServer
 {
 public:
     enum Protocol {
@@ -62,17 +62,17 @@ public:
         STARTTLS
     };
 
-    explicit KAutoconfigServer(Protocol protocol);
-    ~KAutoconfigServer();
+    explicit KAccountAutoconfigServer(Protocol protocol);
+    ~KAccountAutoconfigServer();
 
     /*!
      * Needed for QsharedDataPointer
      */
-    KAutoconfigServer(const KAutoconfigServer &other);
-    KAutoconfigServer &operator=(const KAutoconfigServer &other);
-    KAutoconfigServer(KAutoconfigServer &&other) noexcept;
-    KAutoconfigServer &operator=(KAutoconfigServer &&other) noexcept;
-    bool operator==(const KAutoconfigServer &other) const;
+    KAccountAutoconfigServer(const KAccountAutoconfigServer &other);
+    KAccountAutoconfigServer &operator=(const KAccountAutoconfigServer &other);
+    KAccountAutoconfigServer(KAccountAutoconfigServer &&other) noexcept;
+    KAccountAutoconfigServer &operator=(KAccountAutoconfigServer &&other) noexcept;
+    bool operator==(const KAccountAutoconfigServer &other) const;
     /*!
      * The url to connect to the sever. Port include.
      */
@@ -102,7 +102,7 @@ public:
     [[nodiscard]] bool isValid() const;
 
 private:
-    QSharedDataPointer<KAutoconfigServerPrivate> d;
+    QSharedDataPointer<KAccountAutoconfigServerPrivate> d;
 };
 
-KACCOUNTAUTOCONFIG_EXPORT QDebug operator<<(QDebug debug, const KAutoconfigServer &server);
+KACCOUNTAUTOCONFIG_EXPORT QDebug operator<<(QDebug debug, const KAccountAutoconfigServer &server);

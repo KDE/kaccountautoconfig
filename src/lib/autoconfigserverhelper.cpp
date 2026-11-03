@@ -8,38 +8,38 @@
 
 namespace AutoconfigServerHelper
 {
-KAutoconfigServer::AuthenticationType authenticationFromString(const QString &authenticationStr)
+KAccountAutoconfigServer::AuthenticationType authenticationFromString(const QString &authenticationStr)
 {
-    static const QHash<QString, KAutoconfigServer::AuthenticationType> authenticationMap{
-        {QStringLiteral("password-cleartext"), KAutoconfigServer::AuthenticationType::PasswordCleartext},
-        {QStringLiteral("password-encrypted"), KAutoconfigServer::AuthenticationType::PasswordEncrypted},
-        {QStringLiteral("basic"), KAutoconfigServer::AuthenticationType::Basic},
-        {QStringLiteral("digest"), KAutoconfigServer::AuthenticationType::Digest},
-        {QStringLiteral("oauth2"), KAutoconfigServer::AuthenticationType::OAuth2},
-        {QStringLiteral("oauth"), KAutoconfigServer::AuthenticationType::OAuth2},
-        {QStringLiteral("ntlm"), KAutoconfigServer::AuthenticationType::NTLM},
-        {QStringLiteral("gssapi"), KAutoconfigServer::AuthenticationType::GSSAPI},
-        {QStringLiteral("tls-client-cert"), KAutoconfigServer::AuthenticationType::TlsClientCert},
-        {QStringLiteral("client-ip-address"), KAutoconfigServer::AuthenticationType::ClientIpAddress},
+    static const QHash<QString, KAccountAutoconfigServer::AuthenticationType> authenticationMap{
+        {QStringLiteral("password-cleartext"), KAccountAutoconfigServer::AuthenticationType::PasswordCleartext},
+        {QStringLiteral("password-encrypted"), KAccountAutoconfigServer::AuthenticationType::PasswordEncrypted},
+        {QStringLiteral("basic"), KAccountAutoconfigServer::AuthenticationType::Basic},
+        {QStringLiteral("digest"), KAccountAutoconfigServer::AuthenticationType::Digest},
+        {QStringLiteral("oauth2"), KAccountAutoconfigServer::AuthenticationType::OAuth2},
+        {QStringLiteral("oauth"), KAccountAutoconfigServer::AuthenticationType::OAuth2},
+        {QStringLiteral("ntlm"), KAccountAutoconfigServer::AuthenticationType::NTLM},
+        {QStringLiteral("gssapi"), KAccountAutoconfigServer::AuthenticationType::GSSAPI},
+        {QStringLiteral("tls-client-cert"), KAccountAutoconfigServer::AuthenticationType::TlsClientCert},
+        {QStringLiteral("client-ip-address"), KAccountAutoconfigServer::AuthenticationType::ClientIpAddress},
     };
 
-    return authenticationMap.value(authenticationStr.toLower(), KAutoconfigServer::AuthenticationType::UnknownAuthentication);
+    return authenticationMap.value(authenticationStr.toLower(), KAccountAutoconfigServer::AuthenticationType::UnknownAuthentication);
 }
 
-KAutoconfigServer::SocketType socketTypeFromString(const QString &socketTypeStr)
+KAccountAutoconfigServer::SocketType socketTypeFromString(const QString &socketTypeStr)
 {
-    static const QHash<QString, KAutoconfigServer::SocketType> socketTypeMap{
-        {QStringLiteral("PLAIN"), KAutoconfigServer::SocketType::Plain},
-        {QStringLiteral("SSL"), KAutoconfigServer::SocketType::SSL},
-        {QStringLiteral("STARTTLS"), KAutoconfigServer::SocketType::STARTTLS},
+    static const QHash<QString, KAccountAutoconfigServer::SocketType> socketTypeMap{
+        {QStringLiteral("PLAIN"), KAccountAutoconfigServer::SocketType::Plain},
+        {QStringLiteral("SSL"), KAccountAutoconfigServer::SocketType::SSL},
+        {QStringLiteral("STARTTLS"), KAccountAutoconfigServer::SocketType::STARTTLS},
     };
 
-    return socketTypeMap.value(socketTypeStr.toUpper(), KAutoconfigServer::SocketType::UnknownSocketType);
+    return socketTypeMap.value(socketTypeStr.toUpper(), KAccountAutoconfigServer::SocketType::UnknownSocketType);
 }
 
-QUrl createUrlFromParserEntry(KAutoconfigServer::Protocol protocol, const AutoConfigParser::Server &server)
+QUrl createUrlFromParserEntry(KAccountAutoconfigServer::Protocol protocol, const AutoConfigParser::Server &server)
 {
-    static const QList hostnameBasedProtocol{KAutoconfigServer::IMAP, KAutoconfigServer::POP3, KAutoconfigServer::SMTP};
+    static const QList hostnameBasedProtocol{KAccountAutoconfigServer::IMAP, KAccountAutoconfigServer::POP3, KAccountAutoconfigServer::SMTP};
     QUrl url(server.url);
     if (server.port != 0) {
         url.setPort(server.port);
@@ -49,7 +49,7 @@ QUrl createUrlFromParserEntry(KAutoconfigServer::Protocol protocol, const AutoCo
     }
     // override host and url if hostnameBasedProtocol
     url.setScheme(server.type);
-    if (protocol == KAutoconfigServer::POP3) {
+    if (protocol == KAccountAutoconfigServer::POP3) {
         // according to https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml
         // pop3 should be pop
         url.setScheme(QStringLiteral("pop"));
@@ -58,23 +58,24 @@ QUrl createUrlFromParserEntry(KAutoconfigServer::Protocol protocol, const AutoCo
     return url;
 }
 
-KAutoconfigServer createServerFromParserEntry(const AutoConfigParser::Server &server, KAutoconfigServer::Protocol protocol, const QString &authenticationType)
+KAccountAutoconfigServer
+createServerFromParserEntry(const AutoConfigParser::Server &server, KAccountAutoconfigServer::Protocol protocol, const QString &authenticationType)
 {
-    KAutoconfigServer publicServer(protocol);
+    KAccountAutoconfigServer publicServer(protocol);
     publicServer.setUrl(createUrlFromParserEntry(protocol, server));
     publicServer.setSocketType(socketTypeFromString(server.socketType));
     publicServer.setAuthenticationType(authenticationFromString(authenticationType));
     return publicServer;
 }
 
-std::optional<KAutoconfigServer::Protocol> protocolFromString(const QString &protocolStr)
+std::optional<KAccountAutoconfigServer::Protocol> protocolFromString(const QString &protocolStr)
 {
-    static const QHash<QString, KAutoconfigServer::Protocol> protocolMap{
-        {QStringLiteral("imap"), KAutoconfigServer::IMAP},
-        {QStringLiteral("pop3"), KAutoconfigServer::POP3},
-        {QStringLiteral("smtp"), KAutoconfigServer::SMTP},
-        {QStringLiteral("caldav"), KAutoconfigServer::CalDAV},
-        {QStringLiteral("carddav"), KAutoconfigServer::CardDAV},
+    static const QHash<QString, KAccountAutoconfigServer::Protocol> protocolMap{
+        {QStringLiteral("imap"), KAccountAutoconfigServer::IMAP},
+        {QStringLiteral("pop3"), KAccountAutoconfigServer::POP3},
+        {QStringLiteral("smtp"), KAccountAutoconfigServer::SMTP},
+        {QStringLiteral("caldav"), KAccountAutoconfigServer::CalDAV},
+        {QStringLiteral("carddav"), KAccountAutoconfigServer::CardDAV},
     };
     if (!protocolMap.contains(protocolStr.toLower())) {
         return std::nullopt;

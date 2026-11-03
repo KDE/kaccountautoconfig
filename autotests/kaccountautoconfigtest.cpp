@@ -95,27 +95,27 @@ private Q_SLOTS:
     {
         QTest::addColumn<bool>("searchLocalFile");
         QTest::addColumn<Responses>("responses");
-        QTest::addColumn<QList<KAutoconfigServer>>("expectedServers");
+        QTest::addColumn<QList<KAccountAutoconfigServer>>("expectedServers");
 
-        KAutoconfigServer emailProviderServer(KAutoconfigServer::IMAP);
+        KAccountAutoconfigServer emailProviderServer(KAccountAutoconfigServer::IMAP);
         emailProviderServer.setUrl(QUrl("imap://email.provider.com:993"_L1));
-        emailProviderServer.setAuthenticationType(KAutoconfigServer::PasswordCleartext);
-        emailProviderServer.setSocketType(KAutoconfigServer::SSL);
+        emailProviderServer.setAuthenticationType(KAccountAutoconfigServer::PasswordCleartext);
+        emailProviderServer.setSocketType(KAccountAutoconfigServer::SSL);
 
-        KAutoconfigServer ispdbProviderServer(KAutoconfigServer::IMAP);
+        KAccountAutoconfigServer ispdbProviderServer(KAccountAutoconfigServer::IMAP);
         ispdbProviderServer.setUrl(QUrl("imap://ispdb.provider.com:993"_L1));
-        ispdbProviderServer.setAuthenticationType(KAutoconfigServer::PasswordCleartext);
-        ispdbProviderServer.setSocketType(KAutoconfigServer::SSL);
+        ispdbProviderServer.setAuthenticationType(KAccountAutoconfigServer::PasswordCleartext);
+        ispdbProviderServer.setSocketType(KAccountAutoconfigServer::SSL);
 
-        KAutoconfigServer localProviderServer(KAutoconfigServer::IMAP);
+        KAccountAutoconfigServer localProviderServer(KAccountAutoconfigServer::IMAP);
         localProviderServer.setUrl(QUrl("imap://local.provider.com:993"_L1));
-        localProviderServer.setAuthenticationType(KAutoconfigServer::PasswordCleartext);
-        localProviderServer.setSocketType(KAutoconfigServer::SSL);
+        localProviderServer.setAuthenticationType(KAccountAutoconfigServer::PasswordCleartext);
+        localProviderServer.setSocketType(KAccountAutoconfigServer::SSL);
 
-        KAutoconfigServer MXProviderServer(KAutoconfigServer::IMAP);
+        KAccountAutoconfigServer MXProviderServer(KAccountAutoconfigServer::IMAP);
         MXProviderServer.setUrl(QUrl("imap://mx.provider.com:993"_L1));
-        MXProviderServer.setAuthenticationType(KAutoconfigServer::PasswordCleartext);
-        MXProviderServer.setSocketType(KAutoconfigServer::SSL);
+        MXProviderServer.setAuthenticationType(KAccountAutoconfigServer::PasswordCleartext);
+        MXProviderServer.setSocketType(KAccountAutoconfigServer::SSL);
 
         // the orders should be the same as in the XML
         QTest::newRow("email_provider_valid") << false
@@ -142,7 +142,7 @@ private Q_SLOTS:
     {
         QFETCH(bool, searchLocalFile);
         QFETCH(Responses, responses);
-        QFETCH(QList<KAutoconfigServer>, expectedServers);
+        QFETCH(QList<KAccountAutoconfigServer>, expectedServers);
 
         StubNetworkAccessManager stub;
         stub.addResponses(responses);
@@ -175,59 +175,59 @@ private Q_SLOTS:
     void testAccountAutoconfigMultipleProtocolAndAuth_data()
     {
         QTest::addColumn<QByteArray>("configuration");
-        QTest::addColumn<QList<KAutoconfigServer>>("expectedServers");
+        QTest::addColumn<QList<KAccountAutoconfigServer>>("expectedServers");
         // configuration with multiple imap,pop,stmp and multiple auth
         QFile validConfigurationFile(QDir(QString::fromLatin1(TEST_DATA_DIR)).filePath(QStringLiteral("multiple_protocol_and_authentication.xml")));
         QVERIFY(validConfigurationFile.open(QIODevice::ReadOnly));
         const QByteArray configuration = validConfigurationFile.readAll();
 
         // three pop servers, first on with two auth in the xml
-        KAutoconfigServer firstPopServer(KAutoconfigServer::POP3);
+        KAccountAutoconfigServer firstPopServer(KAccountAutoconfigServer::POP3);
         firstPopServer.setUrl(QUrl("pop://pop.example.com:995"_L1));
-        firstPopServer.setAuthenticationType(KAutoconfigServer::PasswordCleartext);
-        firstPopServer.setSocketType(KAutoconfigServer::SSL);
+        firstPopServer.setAuthenticationType(KAccountAutoconfigServer::PasswordCleartext);
+        firstPopServer.setSocketType(KAccountAutoconfigServer::SSL);
 
-        KAutoconfigServer secondPopServer(KAutoconfigServer::POP3);
+        KAccountAutoconfigServer secondPopServer(KAccountAutoconfigServer::POP3);
         secondPopServer.setUrl(QUrl("pop://pop.example.com:995"_L1));
-        secondPopServer.setAuthenticationType(KAutoconfigServer::PasswordEncrypted);
-        secondPopServer.setSocketType(KAutoconfigServer::SSL);
+        secondPopServer.setAuthenticationType(KAccountAutoconfigServer::PasswordEncrypted);
+        secondPopServer.setSocketType(KAccountAutoconfigServer::SSL);
 
-        KAutoconfigServer thirdPopServer(KAutoconfigServer::POP3);
+        KAccountAutoconfigServer thirdPopServer(KAccountAutoconfigServer::POP3);
         thirdPopServer.setUrl(QUrl("pop://pop.example.com:110"_L1));
-        thirdPopServer.setAuthenticationType(KAutoconfigServer::PasswordCleartext);
-        thirdPopServer.setSocketType(KAutoconfigServer::STARTTLS);
+        thirdPopServer.setAuthenticationType(KAccountAutoconfigServer::PasswordCleartext);
+        thirdPopServer.setSocketType(KAccountAutoconfigServer::STARTTLS);
 
         // three imap servers, second with two auth in the xml
-        KAutoconfigServer firstImapServer(KAutoconfigServer::IMAP);
+        KAccountAutoconfigServer firstImapServer(KAccountAutoconfigServer::IMAP);
         firstImapServer.setUrl(QUrl("imap://imap.example.com:993"_L1));
-        firstImapServer.setAuthenticationType(KAutoconfigServer::PasswordCleartext);
-        firstImapServer.setSocketType(KAutoconfigServer::SSL);
+        firstImapServer.setAuthenticationType(KAccountAutoconfigServer::PasswordCleartext);
+        firstImapServer.setSocketType(KAccountAutoconfigServer::SSL);
 
-        KAutoconfigServer secondImapServer(KAutoconfigServer::IMAP);
+        KAccountAutoconfigServer secondImapServer(KAccountAutoconfigServer::IMAP);
         secondImapServer.setUrl(QUrl("imap://imap.example.com:993"_L1));
-        secondImapServer.setAuthenticationType(KAutoconfigServer::PasswordEncrypted);
-        secondImapServer.setSocketType(KAutoconfigServer::SSL);
+        secondImapServer.setAuthenticationType(KAccountAutoconfigServer::PasswordEncrypted);
+        secondImapServer.setSocketType(KAccountAutoconfigServer::SSL);
 
-        KAutoconfigServer thirdImapServer(KAutoconfigServer::IMAP);
+        KAccountAutoconfigServer thirdImapServer(KAccountAutoconfigServer::IMAP);
         thirdImapServer.setUrl(QUrl("imap://imap.example.com:143"_L1));
-        thirdImapServer.setAuthenticationType(KAutoconfigServer::PasswordCleartext);
-        thirdImapServer.setSocketType(KAutoconfigServer::STARTTLS);
+        thirdImapServer.setAuthenticationType(KAccountAutoconfigServer::PasswordCleartext);
+        thirdImapServer.setSocketType(KAccountAutoconfigServer::STARTTLS);
 
         // three smtp servers, second with two auth in the xml
-        KAutoconfigServer firstSmtpServer(KAutoconfigServer::SMTP);
+        KAccountAutoconfigServer firstSmtpServer(KAccountAutoconfigServer::SMTP);
         firstSmtpServer.setUrl(QUrl("smtp://smtp.googlemail.com:465"_L1));
-        firstSmtpServer.setAuthenticationType(KAutoconfigServer::PasswordCleartext);
-        firstSmtpServer.setSocketType(KAutoconfigServer::SSL);
+        firstSmtpServer.setAuthenticationType(KAccountAutoconfigServer::PasswordCleartext);
+        firstSmtpServer.setSocketType(KAccountAutoconfigServer::SSL);
 
-        KAutoconfigServer secondSmtpServer(KAutoconfigServer::SMTP);
+        KAccountAutoconfigServer secondSmtpServer(KAccountAutoconfigServer::SMTP);
         secondSmtpServer.setUrl(QUrl("smtp://smtp.googlemail.com:587"_L1));
-        secondSmtpServer.setAuthenticationType(KAutoconfigServer::PasswordCleartext);
-        secondSmtpServer.setSocketType(KAutoconfigServer::STARTTLS);
+        secondSmtpServer.setAuthenticationType(KAccountAutoconfigServer::PasswordCleartext);
+        secondSmtpServer.setSocketType(KAccountAutoconfigServer::STARTTLS);
 
-        KAutoconfigServer thirdSmtpServer(KAutoconfigServer::SMTP);
+        KAccountAutoconfigServer thirdSmtpServer(KAccountAutoconfigServer::SMTP);
         thirdSmtpServer.setUrl(QUrl("smtp://smtp.googlemail.com:587"_L1));
-        thirdSmtpServer.setAuthenticationType(KAutoconfigServer::PasswordEncrypted);
-        thirdSmtpServer.setSocketType(KAutoconfigServer::STARTTLS);
+        thirdSmtpServer.setAuthenticationType(KAccountAutoconfigServer::PasswordEncrypted);
+        thirdSmtpServer.setSocketType(KAccountAutoconfigServer::STARTTLS);
 
         // the orders should be the same as in the XML
         const QList validServers = {firstPopServer,
@@ -245,7 +245,7 @@ private Q_SLOTS:
 
     void testAccountAutoconfigMultipleProtocolAndAuth()
     {
-        QFETCH(QList<KAutoconfigServer>, expectedServers);
+        QFETCH(QList<KAccountAutoconfigServer>, expectedServers);
         QFETCH(QByteArray, configuration);
         QCOMPARE(expectedServers.size(), 9);
 

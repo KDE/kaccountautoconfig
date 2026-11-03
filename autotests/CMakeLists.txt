@@ -39,7 +39,7 @@ accountautoconfig_unit_tests(
     emailproviderlookupjobtest
     ispdbproviderlookupjobtest
     kaccountautoconfigtest
-    kautoconfigservertest
+    kaccountautoconfigservertest
     localfileproviderlookupjobtest
     mxproviderlookuptest
 )

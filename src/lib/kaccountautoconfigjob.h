@@ -8,7 +8,7 @@
 
 #include <KCompositeJob>
 
-#include "kautoconfigserver.h"
+#include "kaccountautoconfigserver.h"
 
 #include <kaccountautoconfig_export.h>
 
@@ -46,7 +46,7 @@ public:
      * For example, a POP3 server should be preferred over an IMAP server if the POP3 server is first in the list.
      * Note also that multiple servers can be returned for a given protocol and the order matters also in this case.
      */
-    [[nodiscard]] QList<KAutoconfigServer> servers() const;
+    [[nodiscard]] QList<KAccountAutoconfigServer> servers() const;
 
 private:
     void slotResult(KJob *job) override;

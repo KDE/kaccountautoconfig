@@ -8,7 +8,7 @@ generate_export_header(KF6AccountAutoconfig BASE_NAME kaccountautoconfig)
 set(KAccountAutoconfig_LIB_SRCS
     lib/lookupproviderjobbase.cpp
     lib/kaccountautoconfigjob.cpp
-    lib/kautoconfigserver.cpp
+    lib/kaccountautoconfigserver.cpp
     lib/emailproviderlookupjob.cpp
     lib/ispdbproviderlookupjob.cpp
     lib/autoconfigparser.cpp
@@ -37,7 +37,7 @@ target_sources(
                 lib
             FILES
                 lib/kaccountautoconfigjob.h
-                lib/kautoconfigserver.h
+                lib/kaccountautoconfigserver.h
 )
 
 target_link_libraries(
@@ -63,7 +63,7 @@ set_target_properties(
 ecm_generate_headers(KACCOUNTAUTOCONFIG_CamelCase_HEADERS
     HEADER_NAMES
     KAccountAutoconfigJob
-    KAutoconfigServer
+    KAccountAutoconfigServer
     PREFIX KAccountAutoconfig
     RELATIVE lib
     REQUIRED_HEADERS KACCOUNTAUTOCONFIG_HEADERS

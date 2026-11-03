@@ -10,7 +10,7 @@
 #include "autoconfigserverhelper_p.h"
 #include "emailproviderlookupjob_p.h"
 #include "ispdbproviderlookupjob_p.h"
-#include "kautoconfigserver.h"
+#include "kaccountautoconfigserver.h"
 #include "localfileproviderlookupjob_p.h"
 #include <QNetworkAccessManager>
 
@@ -35,7 +35,7 @@ public:
     KAccountAutoconfigJob *q;
 
     QString m_email;
-    QList<KAutoconfigServer> m_servers;
+    QList<KAccountAutoconfigServer> m_servers;
     LookupProviderJobBase *m_providerJob;
     QNetworkAccessManager *m_networkAccessManager;
 
@@ -128,7 +128,7 @@ void KAccountAutoconfigJob::setEmail(const QString &newEmail)
     d->m_email = newEmail;
 }
 
-QList<KAutoconfigServer> KAccountAutoconfigJob::servers() const
+QList<KAccountAutoconfigServer> KAccountAutoconfigJob::servers() const
 {
     return d->m_servers;
 }
