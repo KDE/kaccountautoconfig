@@ -24,6 +24,8 @@ class KAccountAutoconfigServerPrivate;
  */
 class KACCOUNTAUTOCONFIG_EXPORT KAccountAutoconfigServer
 {
+    Q_GADGET
+
 public:
     enum Protocol {
         IMAP,
@@ -32,6 +34,7 @@ public:
         CalDAV,
         CardDAV
     };
+    Q_ENUM(Protocol);
 
     enum AuthenticationType {
         /*!
@@ -51,6 +54,7 @@ public:
         TlsClientCert,
         ClientIpAddress
     };
+    Q_ENUM(AuthenticationType);
 
     enum SocketType {
         /*!
@@ -61,6 +65,7 @@ public:
         SSL,
         STARTTLS
     };
+    Q_ENUM(SocketType);
 
     explicit KAccountAutoconfigServer(Protocol protocol);
     ~KAccountAutoconfigServer();
