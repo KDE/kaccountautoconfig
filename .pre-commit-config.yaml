@@ -3,6 +3,8 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 
+default_language_version:
+  node: system
 exclude: (^po/|.desktop|Messages.sh)
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -52,6 +54,7 @@ repos:
       - id: markdownlint-cli2
         files: \.(md|mdown|markdown)$
         exclude: (docs/SoftwareDesign.md)
+        language_version: lts
   - repo: https://github.com/scop/pre-commit-shfmt
     rev: v3.13.1-1
     hooks:
