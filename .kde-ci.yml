@@ -10,3 +10,4 @@ Dependencies:
 Options:
   tests-run-in-parallel: True
   enable-lsan: True
+  run-installed-library-check-on: ['@all']

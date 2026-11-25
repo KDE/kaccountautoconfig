@@ -117,3 +117,22 @@ if(BUILD_TESTING)
     )
     ecm_qt_declare_logging_category(KAccountAutoconfigStatic HEADER kaccountautoconfig_debug.h IDENTIFIER KACCOUNTAUTOCONFIG_LOG CATEGORY_NAME org.kde.pim.kaccountautoconfig)
 endif()
+
+if(${ECM_VERSION} VERSION_GREATER_EQUAL 6.33)
+include(ECMInstalledLibraryCheck)
+
+ecm_add_installed_library_check(KF6AccountAutoconfig
+    PACKAGE_NAME "KF6AccountAutoconfig"
+    PACKAGE_TARGET_NAMESPACE "KF6::"
+    QT_STRICT_MODE_LEVEL 6.12
+)
+
+ecm_installed_library_check_include_strings(KF6AccountAutoconfig
+    HEADERS ${KACCOUNTAUTOCONFIG_CamelCase_HEADERS}
+)
+
+ecm_installed_library_check_version_preprocessor_macros(KF6AccountAutoconfig
+    PREFIX KACCOUNTAUTOCONFIG
+)
+
+endif()
