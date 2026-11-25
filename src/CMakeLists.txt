@@ -44,8 +44,8 @@ target_link_libraries(
     KF6AccountAutoconfig
     PUBLIC
         KF6::CoreAddons # for KJob
-        Qt6::Network
     PRIVATE
+        Qt6::Network
         PkgConfig::Libpsl # to extract TLD
 )
 
