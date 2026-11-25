@@ -1,0 +1,31 @@
+/*!
+    \page index.html
+    \title KAccountAutoconfig
+
+    KAccountAutoconfig provides a job to perform server configuration lookup for any given email.
+
+    It is an implementation of the autoconfig RFC:
+    https://www.ietf.org/archive/id/draft-ietf-mailmaint-autoconfig-04.html
+
+    The job performs lookup on different providers like querying the ispdb.net database and performing MX DNS lookups.
+
+    The queried configurations are then mapped to a generic class that can be used in other applications with a
+    standardised set of accessors.
+
+    Note that contrary to what is specified in the RFC, no login test is performed on the provided email and the found
+    configurations.
+
+    \section1 Using the Module
+
+    \include {module-use.qdocinc} {using the c++ api}
+
+    \section2 Building with CMake
+
+    \include {module-use.qdocinc} {building with cmake} {KF6} {KAccountAutoconfig} {KF6::KAccountAutoconfig}
+
+    \section1 API Reference
+
+    \list
+        \li \l{KAccountAutoconfig C++ Classes}
+    \endlist
+*/

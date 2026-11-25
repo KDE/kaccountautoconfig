@@ -97,6 +97,8 @@ install(
     COMPONENT Devel
 )
 
+ecm_generate_qdoc(KF6AccountAutoconfig lib/kaccountautoconfig.qdocconf)
+
 target_include_directories(
     KF6AccountAutoconfig
     INTERFACE

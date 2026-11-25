@@ -16,7 +16,7 @@ class KAccountAutoconfigServerPrivate;
 
 /*!
  * \class KAccountAutoconfigServer
- * \inmodule KAutoconfigAccount
+ * \inmodule KAccountAutoconfig
  * \brief This class holds information about a server.
  *
  * All information needed to connect to a server is stored in this class, except for the email that is present in the Job.
@@ -27,6 +27,14 @@ class KACCOUNTAUTOCONFIG_EXPORT KAccountAutoconfigServer
     Q_GADGET
 
 public:
+    /*!
+     * \enum KAccountAutoconfigServer::Protocol
+     * \value IMAP IMAP protocol.
+     * \value POP3 POP3 protocol.
+     * \value SMTP SMTP protocol.
+     * \value CalDAV CalDAV protocol.
+     * \value CardDAV CardDAV protocol.
+     */
     enum Protocol {
         IMAP,
         POP3,
@@ -36,17 +44,27 @@ public:
     };
     Q_ENUM(Protocol);
 
+    /*!
+     * \enum KAccountAutoconfigServer::AuthenticationType
+     * \value UnknownAuthentication Default value.
+     * URL-based protocols
+     * \value Basic Basic authentication
+     * \value Digest Digest authentication
+     * Common
+     * \value OAuth2 OAuth2 authentication
+     * TCP-based protocols
+     * \value PasswordCleartext Password authentication over cleartext
+     * \value PasswordEncrypted Password authentication over encrypted connection
+     * \value NTLM NTLM authentication
+     * \value GSSAPI GSSAPI authentication
+     * \value TlsClientCert TLS client certificate authentication
+     * \value ClientIpAddress Client IP address authentication
+     */
     enum AuthenticationType {
-        /*!
-         * Default value
-         */
         UnknownAuthentication,
-        // URL-based protocols
         Basic,
         Digest,
-        // Common
         OAuth2,
-        // TCP-based protocols
         PasswordCleartext,
         PasswordEncrypted,
         NTLM,
@@ -56,10 +74,14 @@ public:
     };
     Q_ENUM(AuthenticationType);
 
+    /*!
+     * \enum KAccountAutoconfigServer::SocketType
+     * \value UnknownSocketType Default value.
+     * \value Plain Plain text socket
+     * \value SSL SSL socket
+     * \value STARTTLS STARTTLS socket
+     */
     enum SocketType {
-        /*!
-         * Default value
-         */
         UnknownSocketType,
         Plain,
         SSL,
@@ -85,12 +107,12 @@ public:
     void setUrl(const QUrl &newUrl);
 
     /*!
-     * The protocol of the server, @see Protocol
+     * The protocol of the server, \sa Protocol
      */
     [[nodiscard]] Protocol protocol() const;
 
     /*!
-     * Authentication method to use to connect to the sever, @see AuthenticationType
+     * Authentication method to use to connect to the sever, \sa AuthenticationType
      */
     [[nodiscard]] AuthenticationType authenticationType() const;
     void setAuthenticationType(AuthenticationType newAuthenticationType);
@@ -102,7 +124,7 @@ public:
     void setSocketType(SocketType newSocketType);
 
     /*!
-     * If true, the data can be used to connect to the server.
+     * Returns whether the data can be used to connect to the server
      */
     [[nodiscard]] bool isValid() const;
 

@@ -7,6 +7,13 @@ SPDX-PackageSupplier = "Arnaud Chirat <aci@enioka.com>"
 
 
 [[annotations]]
+path = ["src/lib/*.qdoc", "src/lib/*.qdocconf"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "none"
+SPDX-License-Identifier = "CC0-1.0"
+
+
+[[annotations]]
 path = ["README.md", "metainfo.yaml", "docs/**", ".gersemirc", "autotests/data/*.xml"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "none"

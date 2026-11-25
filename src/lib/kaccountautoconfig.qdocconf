@@ -1,0 +1,31 @@
+include($KDE_DOCS/global/qt-module-defaults.qdocconf)
+
+project = KAccountAutoconfig
+description = Text encoding
+
+documentationinheaders = true
+
+headerdirs += .
+sourcedirs += .
+
+outputformats = HTML
+
+depends += qtcore qtcmake
+
+navigation.landingpage = "KAccountAutoconfig"
+
+qhp.projects                               = KAccountAutoconfig
+
+qhp.KAccountAutoconfig.file                = kaccountautoconfig.qhp
+qhp.KAccountAutoconfig.namespace           = org.kde.kaccountautoconfig.$QT_VERSION_TAG
+qhp.KAccountAutoconfig.virtualFolder       = kaccountautoconfig
+qhp.KAccountAutoconfig.indexTitle          = KAccountAutoconfig
+qhp.KAccountAutoconfig.indexRoot           =
+
+qhp.KAccountAutoconfig.subprojects         = classes
+qhp.KAccountAutoconfig.subprojects.classes.title = C++ Classes
+qhp.KAccountAutoconfig.subprojects.classes.indexTitle = KAccountAutoconfig C++ Classes
+qhp.KAccountAutoconfig.subprojects.classes.selectors = class fake:headerfile
+qhp.KAccountAutoconfig.subprojects.classes.sortPages = true
+
+tagfile = kaccountautoconfig.tags

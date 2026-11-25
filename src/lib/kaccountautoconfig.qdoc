@@ -1,0 +1,9 @@
+/*!
+    \module KAccountAutoconfig
+    \title KAccountAutoconfig C++ Classes
+    \ingroup modules
+    \cmakepackage KF6
+    \cmakecomponent KAccountAutoconfig
+
+    \brief Server configuration lookup by email.
+*/

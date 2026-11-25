@@ -13,7 +13,8 @@ class MXProviderLookupTest;
 class KAccountAutoconfigTest;
 
 /*!
- * \warn: If environment variable `KACCOUNTAUTOCONFIG_USE_DUMMY_NAMESERVER` is set and non-empty, use a stub DNS lookup implementation.
+ * \internal
+ * \warning: If environment variable `KACCOUNTAUTOCONFIG_USE_DUMMY_NAMESERVER` is set and non-empty, use a stub DNS lookup implementation.
  */
 class MXProviderLookupJob : public LookupProviderJobBase
 {

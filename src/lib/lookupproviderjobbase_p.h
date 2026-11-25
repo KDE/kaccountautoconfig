@@ -13,8 +13,10 @@
 
 class QNetworkAccessManager;
 class QUrl;
+
 /*!
- *\brief Base class for every lookup provider job.
+ * \internal
+ * \brief Base class for every lookup provider job.
  *
  * Every provider implementation should implement the lookup() method.
  * The provider is also responsible for knowing when its job is done, meaning it MUST handle the parsing response
@@ -25,9 +27,7 @@ class LookupProviderJobBase : public KJob
 
 public:
     enum Error {
-        /*!
-         * The job could not find the configuration or parse the configuration
-         */
+        // The job could not find the configuration or parse the configuration
         InvalidConfiguration = UserDefinedError,
     };
 
