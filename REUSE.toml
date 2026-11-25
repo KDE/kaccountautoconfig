@@ -7,7 +7,7 @@ SPDX-PackageSupplier = "Arnaud Chirat <aci@enioka.com>"
 
 
 [[annotations]]
-path = ["README.md", "metainfo.yaml", "docs/**", ".gersemirc"]
+path = ["README.md", "metainfo.yaml", "docs/**", ".gersemirc", "autotests/data/*.xml"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "none"
 SPDX-License-Identifier = "CC0-1.0"
