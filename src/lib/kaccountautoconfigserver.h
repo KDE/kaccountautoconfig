@@ -48,12 +48,9 @@ public:
     /*!
      * \enum KAccountAutoconfigServer::AuthenticationType
      * \value UnknownAuthentication Default value.
-     * URL-based protocols
      * \value Basic Basic authentication
      * \value Digest Digest authentication
-     * Common
      * \value OAuth2 OAuth2 authentication
-     * TCP-based protocols
      * \value PasswordCleartext Password authentication over cleartext
      * \value PasswordEncrypted Password authentication over encrypted connection
      * \value NTLM NTLM authentication
