@@ -21,7 +21,7 @@
 
     \section2 Building with CMake
 
-    \include {module-use.qdocinc} {building with cmake} {KF6} {KAccountAutoconfig} {KF6::KAccountAutoconfig}
+    \include {module-use.qdocinc} {building with cmake} {KF6} {AccountAutoconfig} {KF6::AccountAutoconfig}
 
     \section1 API Reference
 
