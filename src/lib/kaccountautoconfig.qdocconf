@@ -10,7 +10,7 @@ sourcedirs += .
 
 outputformats = HTML
 
-depends += qtcore qtcmake
+depends += qtcore qtcmake qtnetwork
 
 navigation.landingpage = "KAccountAutoconfig"
 
