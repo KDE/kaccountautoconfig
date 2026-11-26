@@ -20,7 +20,8 @@ class KAccountAutoconfigServerPrivate;
  * \brief This class holds information about a server.
  *
  * All information needed to connect to a server is stored in this class, except for the email that is present in the Job.
- * Server should be understood as the RFC https://www.ietf.org/archive/id/draft-bucksch-mailmaint-pacc-00.html#name-servers
+ *
+ * Server should be understood as the RFC \l {https://www.ietf.org/archive/id/draft-bucksch-mailmaint-pacc-00.html#name-servers}
  */
 class KACCOUNTAUTOCONFIG_EXPORT KAccountAutoconfigServer
 {

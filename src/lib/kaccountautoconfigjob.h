@@ -21,8 +21,10 @@ class KAccountAutoconfigJobPrivate;
  * \brief This class provides a job that, given an email, retrieves a list of KAccountAutoconfigServer.
  *
  * This job performs lookups from various providers, stopping at the first successful one, and returns all servers defined in the configuration xml that was
- * fetched. The providers are as defined in the RFC
- * https://www.ietf.org/archive/id/draft-ietf-mailmaint-autoconfig-04.html#name-configuration-retrieval-by-mail-clients
+ * fetched.
+ *
+ * The providers are as defined in the RFC
+ * \l{https://www.ietf.org/archive/id/draft-ietf-mailmaint-autoconfig-04.html#name-configuration-retrieval-by-mail-clients}
  */
 class KACCOUNTAUTOCONFIG_EXPORT KAccountAutoconfigJob : public KCompositeJob
 {
@@ -42,8 +44,11 @@ public:
     explicit KAccountAutoconfigJob(QObject *parent = nullptr);
     /*!
      * If needed, provide a custom network access manager to use in the sub-jobs.
+     *
      * Most likely this should only be used for testing purposes and you likely should use the other constructor.
+     *
      * \a networkAccessManager the network access manager to use
+     *
      * \a parent the parent object
      */
     explicit KAccountAutoconfigJob(QNetworkAccessManager *networkAccessManager, QObject *parent = nullptr);
@@ -52,6 +57,7 @@ public:
 
     /*!
      * Starts iterating over different providers and stops when a valid configuration is found.
+     *
      * When the job is done, the KJob::result() signal is emitted and the results are available through the servers() method.
      */
     void start() override;
@@ -69,7 +75,9 @@ public:
      * \brief Get all servers ordered by priority.
      *
      * The client should carefully handle the order.
+     *
      * For example, a POP3 server should be preferred over an IMAP server if the POP3 server is first in the list.
+     *
      * Note also that multiple servers can be returned for a given protocol and the order matters also in this case.
      */
     [[nodiscard]] QList<KAccountAutoconfigServer> servers() const;
