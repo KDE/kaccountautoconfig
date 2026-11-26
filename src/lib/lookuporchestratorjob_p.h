@@ -10,6 +10,7 @@ class LookupProviderJobBase;
 class QNetworkAccessManager;
 
 /*!
+ * \internal
  * \brief This job orchestrates provider jobs to find a valid configuration following the orders defined in the RFC
  * https://benbucksch.github.io/autoconfig-spec/draft-ietf-mailmaint-autoconfig.html
  *

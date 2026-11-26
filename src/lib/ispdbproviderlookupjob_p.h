@@ -9,6 +9,7 @@
 class QNetworkAccessManager;
 
 /*!
+ * \internal
  * \brief Lookup for configuration in ISPDB as described in RFC
  * https://benbucksch.github.io/autoconfig-spec/draft-ietf-mailmaint-autoconfig.html#name-central-database
  *

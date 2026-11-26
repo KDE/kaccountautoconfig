@@ -10,6 +10,7 @@
 class QNetworkAccessManager;
 
 /*!
+ * \internal
  * \brief Lookup for configuration according to email provider as described in RFC
  * https://benbucksch.github.io/autoconfig-spec/draft-ietf-mailmaint-autoconfig.html#name-mail-provider
  *
