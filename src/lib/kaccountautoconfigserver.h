@@ -90,12 +90,12 @@ public:
     };
     Q_ENUM(SocketType);
 
+    /*!
+     *
+     */
     explicit KAccountAutoconfigServer(Protocol protocol);
     ~KAccountAutoconfigServer();
 
-    /*!
-     * Needed for QsharedDataPointer
-     */
     KAccountAutoconfigServer(const KAccountAutoconfigServer &other);
     KAccountAutoconfigServer &operator=(const KAccountAutoconfigServer &other);
     KAccountAutoconfigServer(KAccountAutoconfigServer &&other) noexcept;
